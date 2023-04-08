@@ -24,7 +24,6 @@ target_compile_features(minqueuelib PUBLIC cxx_std_17)
 IF(ENABLE_TESTS)
 	enable_testing()
 
-# GoogleTest requires at least C++14
 include(FetchContent)
 FetchContent_Declare(
   googletest
