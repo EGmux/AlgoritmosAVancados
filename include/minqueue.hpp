@@ -13,25 +13,27 @@ class Minqueue {
    * generator
    * @returns None
    */
-  void enqueue(const int& x_k);
+  void enqueue(const uint32_t& x_k);
 
   /**
-   *	Remove _curVec.begin() also in _minimumVec() if their values are the same
+   *	Remove _curVec.begin() also in _minimumVec() if their values are the
+   *same
    * @params None
    * @returns None
    */
   void dequeue();
 
   /**
-   *	Returns _minimumVec().begin() that due to the invariant in enqueue is always the smallest element
+   *	Returns _minimumVec().begin() that due to the invariant in enqueue is
+   *always the smallest element
    * @params None
    * @returns the smallest integer in _minimumVec
    */
-  int minElem();
+  uint32_t minElem();
 
  private:
-  std::vector<uint32_t> _curVec;
-  std::vector<uint32_t> _minimumVec;
+  std::vector<uint32_t>* _curVec;
+  std::vector<uint32_t>* _minimumVec;
 };
 
 #endif  // MINQUE_H
