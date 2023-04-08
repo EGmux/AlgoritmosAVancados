@@ -3,6 +3,12 @@
 
 #include <vector>
 
+struct minimum {
+  uint32_t elem;
+  uint32_t* pos;
+  minimum(uint32_t e, uint32_t* p) : elem(e), pos(p){};
+};
+
 class Minqueue {
  public:
   /**
@@ -29,11 +35,18 @@ class Minqueue {
    * @params None
    * @returns the smallest integer in _minimumVec
    */
-  uint32_t minElem();
+  minimum minElem();
+
+  /**
+   *	Returns the size of _minimumVec
+   * @params None
+   * @returns the size of _minimuVec
+   */
+  uint32_t sizeOfMinVec();
 
  private:
   std::vector<uint32_t>* _curVec;
-  std::vector<uint32_t>* _minimumVec;
+  std::vector<minimum>* _minimumVec;
 };
 
 #endif  // MINQUE_H
