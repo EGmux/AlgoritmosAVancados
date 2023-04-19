@@ -22,7 +22,7 @@ class sparseTable{
    *  @params high_index The end of the range query
    *  @returns The computation result
    */
-    uint32_t query(cont uint32_t low_index, const uint32_t high_index);
+    uint32_t query(const uint32_t low_index, const uint32_t high_index);
   
     private:
     mat_uint32_t sparseTable;
