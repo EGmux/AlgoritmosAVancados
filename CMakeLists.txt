@@ -17,9 +17,9 @@ project ("AlgoritmosAVancados")
 add_subdirectory ("AlgoritmosAVancados")
 
 # Include headers
-add_library(minqueuelib STATIC "include/sparsetable.hpp" "src/sparsetable.cpp")
-target_include_directories(minqueuelib PUBLIC "include")
-target_compile_features(minqueuelib PUBLIC cxx_std_17)
+add_library(sparsetablelib STATIC "include/sparsetable.hpp" "src/sparsetable.cpp")
+target_include_directories(sparsetablelib PUBLIC "include")
+target_compile_features(sparsetablelib PUBLIC cxx_std_17)
 
 IF(ENABLE_TESTS)
 	enable_testing()
@@ -40,6 +40,6 @@ gtest_discover_tests(lista2Tests)
 endif()
 
 add_executable(main "apps/lista2.cpp")
-target_link_libraries(main PUBLIC minqueuelib)
+target_link_libraries(main PUBLIC sparsetablelib)
 
 
