@@ -26,7 +26,6 @@ class sparseTable{
   
     private:
     mat_uint32_t sparseTable;
-}
-
+};
 
 #endif  // SPARSE_TABLE_H
