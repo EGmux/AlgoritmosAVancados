@@ -1,3 +1,5 @@
+#include "sparsetable.hpp"
+
 #include "include/sparsetable.hpp"
 #include <cmath>
 
