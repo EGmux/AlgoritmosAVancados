@@ -24,8 +24,17 @@ class sparseTable{
    */
     uint32_t query(const uint32_t low_index, const uint32_t high_index);
   
+ /* 
+  * Default constructor that construct the sparse table
+  * @params initialArr The vector that will generate 
+  * the sparse table
+  * @parmas op The operation computed for each index of the table, can be SUM, MIN or MAX
+  * @return None
+  */
+    sparseTable(const std::vector<uint32_t> initialArr, uint32_t(*op)(const uint32_t, const uint32_t));
+
     private:
-    mat_uint32_t sparseTable;
+    mat_uint32_t sparseTableData;
 };
 
 #endif  // SPARSE_TABLE_H
