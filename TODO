@@ -1,4 +1,5 @@
 
 Todo:
-  ☐ implement upd method in sparsetable.hpp
+  ✔ implement default constructor for sparsetable.hpp @started(23-04-20 09:46) @done(23-04-20 09:46) @lasted(11s)
+  ☐ implement upd method in sparsetable.hpp @started(23-04-20 09:49)
   ☐ implement query mehod in sparsetable.hpp
