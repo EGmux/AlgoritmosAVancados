@@ -13,14 +13,13 @@
  * floor(log2(initialArr.size()))
  */
 SparseTable::SparseTable(const std::vector<uint32_t>& intialArr,
-                         uint32_t (*op)(const uint32_t, const uint32_t)):
-        m_op {op} {
+                         uint32_t (*op)(const uint32_t, const uint32_t),const uint32_t id):
+        m_op {op},OP_IDENTITY{id} {
     const uint32_t height = floor(log2(intialArr.size())) + 1;
     const uint32_t width = intialArr.size();
     m_sparseTableData = new Matuint32T(height,std::vector<uint32_t>(width));
     std::for_each(m_sparseTableData->begin(), m_sparseTableData->end(), [width](std::vector<uint32_t>&row){row.reserve(width
     );});
-    m_sparseTableData[0][0].assign(intialArr.begin(),intialArr.end());
     std::copy(intialArr.begin(),
               intialArr.end(),
               (*m_sparseTableData)[0].begin());    // fills zeroth row, we need the ('s due to precedence issues
@@ -51,11 +50,11 @@ SparseTable::SparseTable(const std::vector<uint32_t>& intialArr,
  */
 uint32_t SparseTable::Query(uint32_t lowIndex, const uint32_t HIGH_INDEX) {
     uint32_t curIndex;
-    uint32_t curAcc;
+    uint32_t curAcc{OP_IDENTITY}; //whenever m_op(curAcc, val) is called it always return val
     while(lowIndex < HIGH_INDEX){
         curIndex = floor(log2(HIGH_INDEX-lowIndex));
         curAcc = m_op(curAcc,(*m_sparseTableData)[curIndex][lowIndex]);
-        lowIndex = (lowIndex << curIndex); 
+        lowIndex = lowIndex + (lowIndex << curIndex); 
     }
     return curAcc;
 };
@@ -77,9 +76,9 @@ void SparseTable::Upd(const uint32_t CUR_INDEX, const uint32_t UPDATED_INDEX) {
                  std::max(0, static_cast<int>(curIter) - (1 << curIter) - 1))};
              curCol < CUR_INDEX;
              ++curCol) {
-            *m_sparseTableData[curRow][curCol].data()= //we use .data() and not pushback() because we already filled the vector in the default constructor
-                m_op(*m_sparseTableData[curRow - 1][curCol].data(),
-                     *m_sparseTableData[curRow - 1][curCol + (1 << (curRow - 1))].data());
+            (*m_sparseTableData)[curRow][curCol]= //we use .data() and not pushback() because we already filled the vector in the default constructor
+                m_op((*m_sparseTableData)[curRow - 1][curCol],
+                     (*m_sparseTableData)[curRow - 1][curCol + (1 << (curRow - 1))]);
         };
     };
 };
