@@ -26,7 +26,7 @@ int main() {
         std::stringstream ss(curLine);
         ss >> seed >> sparseTableWidth >> op >> numOps >> freqRangeQuery >> freqRangeUpdt; //parse testset
         std::vector<uint32_t> zerothRow;
-        zerothRow.reserve(sparseTableWidth);
+        zerothRow.resize(sparseTableWidth); // https://stackoverflow.com/questions/13029299/stdvectorresize-vs-stdvectorreserve
         auto curSeed = RNG(seed);
         auto m = (sparseTableWidth << 2);
 
