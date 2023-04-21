@@ -13,7 +13,7 @@ SparseTable::SparseTable(const std::vector<uint32_t>& intialArr, uint32_t(*op)(c
 {
     const uint32_t numRows = floor(log2(intialArr.size())) + 1;
     m_sparseTableData.reserve((floor(log2(intialArr.size()+1) + intialArr.size()))); // prealloc the matrix
-    std::copy(intialArr.begin(), intialArr.end(), m_sparseTableData[0]); // fills zeroth row
+    std::copy(intialArr.begin(), intialArr.end(), m_sparseTableData[0].begin()); // fills zeroth row
     for(uint32_t curRow{1}; curRow <= numRows; ++curRow){
         /*
         * briefly to compute for instance a index of the first row, each computation require two elements, we would do the following
