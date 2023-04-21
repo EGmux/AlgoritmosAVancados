@@ -17,15 +17,13 @@ SparseTable::SparseTable(const std::vector<uint32_t>& intialArr,
         m_op {op} {
     const uint32_t height = floor(log2(intialArr.size())) + 1;
     const uint32_t width = intialArr.size();
-    m_sparseTableData = new Matuint32T(height);
-    std::for_each(m_sparseTableData->begin(),
-                  m_sparseTableData->end(),
-                  [width](std::vector<uint32_t>& row) {
-        row.reserve(width);
-    });                                                   
+    m_sparseTableData = new Matuint32T(height,std::vector<uint32_t>(width));
+    std::for_each(m_sparseTableData->begin(), m_sparseTableData->end(), [width](std::vector<uint32_t>&row){row.reserve(width
+    );});
+    m_sparseTableData[0][0].assign(intialArr.begin(),intialArr.end());
     std::copy(intialArr.begin(),
               intialArr.end(),
-              std::back_inserter(m_sparseTableData[0]));    // fills zeroth row
+              (*m_sparseTableData)[0].begin());    // fills zeroth row, we need the ('s due to precedence issues
     for (uint32_t curRow {1}; curRow < width; ++curRow) {
         /*
          * briefly to compute for instance a index of the first row, each computation require two
@@ -37,12 +35,11 @@ SparseTable::SparseTable(const std::vector<uint32_t>& intialArr,
          * (row0[0]+row0[1])+(row0[2]+row0[3]), but notice that can be simplified to row1[0]+row1[2]
          * notice the gap of 1 index, we increase this gap to 1 << (curRow -1) for the nth row.
          */
-        for (uint32_t curCol {0}; curCol + (curCol << 1) <= intialArr.size(); ++curCol) {
-            m_sparseTableData[curRow][curCol].push_back(
-                m_op(*m_sparseTableData[curRow-1][curCol].data(),
-                   *m_sparseTableData[curRow-1][curCol+(1 << (curCol -1))].data()));
+        for (uint32_t curCol {0}; curCol + (1 << curRow) <= intialArr.size(); ++curCol) {
+            (*m_sparseTableData)[curRow][curCol]=
+                m_op((*m_sparseTableData)[curRow-1][curCol],
+                   (*m_sparseTableData)[curRow-1][curCol+(1 << (curRow -1))]);
         };
-        std::reverse(m_sparseTableData->begin(), m_sparseTableData->end());
     };
 }
 
@@ -57,7 +54,7 @@ uint32_t SparseTable::Query(uint32_t lowIndex, const uint32_t HIGH_INDEX) {
     uint32_t curAcc;
     while(lowIndex < HIGH_INDEX){
         curIndex = floor(log2(HIGH_INDEX-lowIndex));
-        curAcc = m_op(curAcc,*m_sparseTableData[curIndex][lowIndex].data());
+        curAcc = m_op(curAcc,(*m_sparseTableData)[curIndex][lowIndex]);
         lowIndex = (lowIndex << curIndex); 
     }
     return curAcc;
