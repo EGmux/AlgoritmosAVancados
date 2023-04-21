@@ -26,14 +26,19 @@ int main() {
         std::stringstream ss(curLine);
         ss >> seed >> sparseTableWidth >> op >> numOps >> freqRangeQuery >> freqRangeUpdt; //parse testset
         std::vector<uint32_t> zerothRow;
-        zerothRow.resize(sparseTableWidth); // https://stackoverflow.com/questions/13029299/stdvectorresize-vs-stdvectorreserve
+        zerothRow.reserve(sparseTableWidth); // https://stackoverflow.com/questions/13029299/stdvectorresize-vs-stdvectorreserve
         auto curSeed = RNG(seed);
         auto m = (sparseTableWidth << 2);
 
-        for (auto &i : zerothRow) {
-            i = curSeed % m;
+        /* 
+        * We use pushback here because reserve only allocates memory, but won't create the necessary indexes
+        * until needed.
+         */
+        for (auto i{0};i < sparseTableWidth; ++i) {
+            zerothRow.push_back(curSeed);
             curSeed = RNG(curSeed);
         };
+        std::reverse(zerothRow.begin() , zerothRow.end()); //mutates the vector inplace
         uint32_t (*function)(const uint32_t, const uint32_t);
         if (op == "MIN") {
             function = [](const uint32_t X, const uint32_t Y) {
