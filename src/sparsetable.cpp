@@ -23,7 +23,8 @@ SparseTable::SparseTable(const std::vector<uint32_t>& intialArr,
     std::copy(intialArr.begin(),
               intialArr.end(),
               (*m_sparseTableData)[0].begin());    // fills zeroth row, we need the ('s due to precedence issues
-    for (uint32_t curRow {1}; curRow < width; ++curRow) {
+    uint32_t curIter{1};    
+    for (uint32_t curRow {1}; curRow < height; ++curRow) {
         /*
          * briefly to compute for instance a index of the first row, each computation require two
          * elements, we would do the following get the value exactly on the above row in the same
@@ -34,11 +35,12 @@ SparseTable::SparseTable(const std::vector<uint32_t>& intialArr,
          * (row0[0]+row0[1])+(row0[2]+row0[3]), but notice that can be simplified to row1[0]+row1[2]
          * notice the gap of 1 index, we increase this gap to 1 << (curRow -1) for the nth row.
          */
-        for (uint32_t curCol {0}; curCol + (1 << curRow) <= intialArr.size(); ++curCol) {
+        for (uint32_t curCol {0}; curCol < width; ++curCol) {
             (*m_sparseTableData)[curRow][curCol]=
                 m_op((*m_sparseTableData)[curRow-1][curCol],
-                   (*m_sparseTableData)[curRow-1][curCol+(1 << (curRow -1))]);
+                   (*m_sparseTableData)[curRow-1][curCol+ curIter]);
         };
+        curIter = curIter << 1;
     };
 }
 
@@ -51,10 +53,11 @@ SparseTable::SparseTable(const std::vector<uint32_t>& intialArr,
 uint32_t SparseTable::Query(uint32_t lowIndex, const uint32_t HIGH_INDEX) {
     uint32_t curIndex;
     uint32_t curAcc{OP_IDENTITY}; //whenever m_op(curAcc, val) is called it always return val
+    auto height = (*m_sparseTableData).size();
     while(lowIndex < HIGH_INDEX){
-        curIndex = floor(log2(HIGH_INDEX-lowIndex));
-        curAcc = m_op(curAcc,(*m_sparseTableData)[curIndex][lowIndex]);
-        lowIndex = lowIndex + (1 << curIndex); 
+        curIndex = floor(log2(HIGH_INDEX - lowIndex))+1; // auto find the row with the largest possible subquery
+        curAcc = m_op(curAcc, (*m_sparseTableData)[curIndex-1][lowIndex]); 
+        lowIndex+= 1 << curIndex; // equivalent of going to the next subquery
     }
     return curAcc;
 };
@@ -70,15 +73,16 @@ uint32_t SparseTable::Query(uint32_t lowIndex, const uint32_t HIGH_INDEX) {
 void SparseTable::Upd(const uint32_t CUR_INDEX, const uint32_t UPDATED_INDEX) {
     (*m_sparseTableData)[0][CUR_INDEX] = UPDATED_INDEX;
     uint32_t curIter {1};
-    auto width = (*m_sparseTableData).size();
-    for (uint32_t curRow {1}; curRow < width; ++curRow) {
+    auto height = (*m_sparseTableData).size();
+    for (uint32_t curRow {1}; curRow < height; ++curRow) {
         for (uint32_t curCol {static_cast<uint32_t>(
-                 std::max(0, static_cast<int>(curIter) - (1 << curIter) - 1))};
-             curCol < CUR_INDEX;
+                 std::max(0, static_cast<int>(CUR_INDEX) - static_cast<int>(curIter << 1) + 1))};
+             curCol <= CUR_INDEX;
              ++curCol) {
-            (*m_sparseTableData)[curRow][curCol]= //we use .data() and not pushback() because we already filled the vector in the default constructor
+                (*m_sparseTableData)[curRow][curCol]=
                 m_op((*m_sparseTableData)[curRow - 1][curCol],
-                     (*m_sparseTableData)[curRow - 1][curCol + (1 << (curRow - 1))]);
+                     (*m_sparseTableData)[curRow - 1][curCol + curIter]);
         };
+        curIter = curIter << 1;
     };
 };
