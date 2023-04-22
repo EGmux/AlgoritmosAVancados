@@ -29,11 +29,12 @@ public:
      * Default constructor that construct the sparse table
      * @params initialArr The vector that will generate
      * the sparse table
-     * @parmas op The operation computed for each index of the table, can be SUM, MIN or MAX
+     * @params op The operation computed for each index of the table, can be SUM, MIN or MAX
+     * @params id The identity of the operation, used when query is called
      * @return None
      */
     SparseTable(const std::vector<uint32_t> &initialArr,
-                uint32_t (*op)(const uint32_t, const uint32_t));
+                uint32_t (*op)(const uint32_t, const uint32_t),  uint32_t id);
 
 private:
     Matuint32T* m_sparseTableData;
@@ -41,6 +42,7 @@ private:
     const     uint32_t,
     const     uint32_t);    // op is the name of the attribute,
                             // https://stackoverflow.com/questions/12772372/c-class-that-has-a-pointer-to-a-function-as-an-attribute
+    const uint32_t OP_IDENTITY; // if op=MAX then set it to 0, else if MIN set to MAXUINT32 if sum set to 0                            
 };
 
 #endif    // SPARSE_TABLE_H
