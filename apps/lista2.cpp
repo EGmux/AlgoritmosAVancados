@@ -40,20 +40,24 @@ int main() {
         };
         std::reverse(zerothRow.begin() , zerothRow.end()); //mutates the vector inplace
         uint32_t (*function)(const uint32_t, const uint32_t);
+        uint32_t id;
         if (op == "MIN") {
             function = [](const uint32_t X, const uint32_t Y) {
                 return X > Y ? Y : X;
             };
+            id=UINT32_MAX;
         } else if (op == "MAX") {
             function = [](const uint32_t X, const uint32_t Y) {
                 return X > Y ? X : Y;
             };
+            id=0;
         } else {
             function = [](const uint32_t X, const uint32_t Y) {
                 return X + Y;
             };
+            id=0;
         }
-        SparseTable st {zerothRow, function};
+        SparseTable st {zerothRow, function,id};
         uint32_t result;
         std::cout << "caso" << " " << curIter << '\n';
         for (uint32_t curOp {0}; curOp < numOps; ++curOp) {
