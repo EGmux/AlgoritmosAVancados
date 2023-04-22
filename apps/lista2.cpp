@@ -10,7 +10,7 @@
 #define R           (1 << 31);
 #define A           1664525
 #define C           1013904223
-#define RNG(curGen) (A * curGen) % R;
+#define RNG(curGen) (A * curGen + C) % R;
 
 int main(int argc, char* argv[]) {
     uint32_t sparseTableWidth{0};
@@ -38,7 +38,6 @@ int main(int argc, char* argv[]) {
             zerothRow.push_back(curSeed%m);
             curSeed = RNG(curSeed);
         };
-        std::reverse(zerothRow.begin() , zerothRow.end()); //mutates the vector inplace
         uint32_t (*function)(const uint32_t, const uint32_t);
         uint32_t id;
         if (op == "MIN") {
