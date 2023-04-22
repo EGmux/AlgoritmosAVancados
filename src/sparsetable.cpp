@@ -54,7 +54,7 @@ uint32_t SparseTable::Query(uint32_t lowIndex, const uint32_t HIGH_INDEX) {
     while(lowIndex < HIGH_INDEX){
         curIndex = floor(log2(HIGH_INDEX-lowIndex));
         curAcc = m_op(curAcc,(*m_sparseTableData)[curIndex][lowIndex]);
-        lowIndex = lowIndex + (lowIndex << curIndex); 
+        lowIndex = lowIndex + (1 << curIndex); 
     }
     return curAcc;
 };
@@ -68,9 +68,9 @@ uint32_t SparseTable::Query(uint32_t lowIndex, const uint32_t HIGH_INDEX) {
  * re-computed.
  */
 void SparseTable::Upd(const uint32_t CUR_INDEX, const uint32_t UPDATED_INDEX) {
-    *m_sparseTableData[0][CUR_INDEX].data() = UPDATED_INDEX;
+    (*m_sparseTableData)[0][CUR_INDEX] = UPDATED_INDEX;
     uint32_t curIter {1};
-    auto width = m_sparseTableData[0].size();
+    auto width = (*m_sparseTableData).size();
     for (uint32_t curRow {1}; curRow < width; ++curRow) {
         for (uint32_t curCol {static_cast<uint32_t>(
                  std::max(0, static_cast<int>(curIter) - (1 << curIter) - 1))};

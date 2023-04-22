@@ -12,15 +12,15 @@
 #define C           1013904223
 #define RNG(curGen) (A * curGen) % R;
 
-int main() {
-    uint32_t sparseTableWidth;
-    uint32_t seed;
+int main(int argc, char* argv[]) {
+    uint32_t sparseTableWidth{0};
+    uint32_t seed{0};
     std::string op;     // operation that can be MIN, MAX or SUM
-    uint32_t numOps;    // total number of operations
-    uint32_t freqRangeQuery;
-    uint32_t freqRangeUpdt;
+    uint32_t numOps{0};    // total number of operations
+    uint32_t freqRangeQuery{0};
+    uint32_t freqRangeUpdt{0};
     std::string curLine;    // current testset in a testcase;
-    uint32_t curIter; // current testcase
+    uint32_t curIter{0}; // current testcase
 
     while (std::getline(std::cin, curLine), !curLine.empty()) {
         std::stringstream ss(curLine);
@@ -35,7 +35,7 @@ int main() {
         * until needed.
          */
         for (auto i{0};i < sparseTableWidth; ++i) {
-            zerothRow.push_back(curSeed);
+            zerothRow.push_back(curSeed%m);
             curSeed = RNG(curSeed);
         };
         std::reverse(zerothRow.begin() , zerothRow.end()); //mutates the vector inplace
@@ -75,5 +75,6 @@ int main() {
             curSeed = RNG(curSeed);
         };
         std::cout << '\n'; // blank line, signals end of current testcase
+        curIter=curIter+1;
     }
 };
