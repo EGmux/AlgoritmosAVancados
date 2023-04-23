@@ -17,9 +17,9 @@ project ("AlgoritmosAVancados")
 add_subdirectory ("AlgoritmosAVancados")
 
 # Include headers
-add_library(sparsetablelib STATIC "include/sparsetable.hpp" "src/sparsetable.cpp")
-target_include_directories(sparsetablelib PUBLIC "include")
-target_compile_features(sparsetablelib PUBLIC cxx_std_17)
+add_library(vanendeboaslib STATIC "include/vanendeboas.hpp" "src/vanendeboas.cpp")
+target_include_directories(vanendeboaslib PUBLIC "include")
+target_compile_features(vanendeboaslib PUBLIC cxx_std_17)
 
 IF(ENABLE_TESTS)
 	enable_testing()
@@ -33,13 +33,13 @@ FetchContent_Declare(
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
-add_executable(lista2Tests "tests/lista2tests.cpp")
-target_link_libraries(lista2Tests PRIVATE GTest::gtest_main)
+add_executable(lista3Tests "tests/lista3tests.cpp")
+target_link_libraries(lista3Tests PRIVATE GTest::gtest_main)
 include(GoogleTest)
-gtest_discover_tests(lista2Tests)
+gtest_discover_tests(lista3Tests)
 endif()
 
-add_executable(main "apps/lista2.cpp")
-target_link_libraries(main PUBLIC sparsetablelib)
+add_executable(main "apps/lista3.cpp")
+target_link_libraries(main PUBLIC vanendeboaslib)
 
 
