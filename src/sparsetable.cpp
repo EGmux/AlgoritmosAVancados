@@ -55,10 +55,11 @@ uint32_t SparseTable::Query(uint32_t lowIndex, const uint32_t HIGH_INDEX) {
     uint32_t curAcc{OP_IDENTITY}; //whenever m_op(curAcc, val) is called it always return val
     auto height = (*m_sparseTableData).size();
     while(lowIndex < HIGH_INDEX){
-        curIndex = floor(log2(HIGH_INDEX - lowIndex))+1; // auto find the row with the largest possible subquery
-        curAcc = m_op(curAcc, (*m_sparseTableData)[curIndex-1][lowIndex]); 
+        curIndex = floor(log2(HIGH_INDEX - lowIndex)); // auto find the row with the largest possible subquery
+        curAcc = m_op(curAcc, (*m_sparseTableData)[curIndex][lowIndex]); 
         lowIndex+= 1 << curIndex; // equivalent of going to the next subquery
     }
+    /* if(lowIndex==HIGH_INDEX){return m_op(curAcc,(*m_sparseTableData)[0][lowIndex-1]);} // the last subquery may be a single element vector */
     return curAcc;
 };
 
@@ -68,7 +69,7 @@ uint32_t SparseTable::Query(uint32_t lowIndex, const uint32_t HIGH_INDEX) {
  * height is the  column where the update happened, the next update is the below row and the
  * imediate left index and the next row after the first increase the number of neighbours that must
  * be updated, until the last, where all the columns to the left of the updated value are
- * re-computed.
+ * re-computed, a tringular pattern is formed.
  */
 void SparseTable::Upd(const uint32_t CUR_INDEX, const uint32_t UPDATED_INDEX) {
     (*m_sparseTableData)[0][CUR_INDEX] = UPDATED_INDEX;
