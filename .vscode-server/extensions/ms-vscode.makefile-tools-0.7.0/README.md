@@ -15,7 +15,7 @@ If you need any environment variables to be set or any terminal operations to be
 (like the usual `./autogen.sh`, `./configure` or `vcvarsall.bat`), you need to launch VSCode from a terminal
 that is already set up according to your project requirements OR you can point the `makefile.preConfigureSript`
 setting to a batch script file and invoke it at any time via the command `makefile.preconfigure` in the pallette.
-By seting `makefile.alwaysPreConfigure` to true, you don't need to run the pre-configure command separately.
+By setting `makefile.alwaysPreConfigure` to true, you don't need to run the pre-configure command separately.
 The extension is going to invoke the script before every configure operation.
 
 ### Configuring your project
@@ -64,10 +64,10 @@ the `binaryArgs` property to the configuration.
 # Troubleshooting
 
 We documented the settings and configurations needed for a select number of repositories that we have
-tested. The document can be found here: [docs/repositories.md](https://github.com/Microsoft/vscode-makefile-tools/blob/master/./docs/repositories.md). Contributions to this
+tested. The document can be found here: [docs/repositories.md](https://github.com/Microsoft/vscode-makefile-tools/blob/HEAD/docs/repositories.md). Contributions to this
 document (e.g. for additional repositories that we have not tested) are welcome.
 
-A more in-depth troubleshooting guide can be found here: [docs/troubleshooting.md](https://github.com/Microsoft/vscode-makefile-tools/blob/master/./docs/troubleshooting.md)
+A more in-depth troubleshooting guide can be found here: [docs/troubleshooting.md](https://github.com/Microsoft/vscode-makefile-tools/blob/HEAD/docs/troubleshooting.md)
 
 # Feedback and Suggestions
 
@@ -89,7 +89,7 @@ provided by the bot. You will only need to do this once across all repos using o
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
-contact [opencode@microsoft.com](https://github.com/Microsoft/vscode-makefile-tools/blob/master/mailto:opencode@microsoft.com) with any additional questions or comments.
+contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
 
 ## Data and telemetry
 
