@@ -11,14 +11,14 @@ struct VEBTree{
         std::vector<VEBTree*> m_subtrees;
         VEBTree* m_summary;
         uint32_t m_bitsize;
-        std::array<uint32_t,2> m_arrVals{0,0}; // by default nothing is present
         int32_t min{-1};
         int32_t max{-1}; // equivalent to nil, cast will be needed
         
-        VEBTree(const uint32_t universeSize):m_subtrees(NULL),m_summary(NULL),m_bitsize(universeSize),m_arrVals(){
+        VEBTree(const uint32_t universeSize):m_subtrees(NULL),m_summary(NULL),m_bitsize(universeSize){
             m_subtrees.resize(m_bitsize>>1); // resize because 0 is indeed the base case for an empty VEB
         };
     };
+    
 class VanEndeBoas {
 public:
 
