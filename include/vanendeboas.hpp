@@ -30,7 +30,7 @@ public:
     *   @params valueToBeInserted the value to be inserted in the VEB.
     *   @return None
      */    
-    void insertion(const uint32_t valueToBeInserted);
+    void insertion(VEBTree* parentNode , uint32_t valueToBeInserted);
     
     /*
     *   @brief Given a present value in the VEB find it succesor, to
@@ -55,12 +55,37 @@ public:
     * @params None
     * @return m_vebTREE
     */
-    VEBTree* get_Veb();
+    VEBTree* get_VEB();
     
      VanEndeBoas(const uint32_t universeSize,  VEBTree* parentNode);
     
 private:
     VEBTree* m_vebTREE;
+
+    /* 
+    *   @brief Insert a value in an empty cluster of the VEB
+    *   @params valueToBeInserted the value to be inserted, note that
+    *   the min and max fields of the struct will be the same
+    *   parentNode pointer to node that will have it max and min fields updated.
+    *   @return None
+     */
+    static void emptyTreeInsertion(const uint32_t POSITION, VEBTree* parentNode);
+
+    /* 
+    *   @brief Return the position where a value can be inserted in a cluster 
+    *   @params valueToBeInserted the value that will be inserted in a specific cluster
+    *   parentNode a pointer to the cluster where the insertion will happen.
+    *   @return position in the cluster.
+     */
+    static uint32_t positionInCluster(const uint32_t valueToBeInserted, VEBTree* parentNode);
+
+    /* 
+    *   @brief Return the cluster where a value can be inserted
+    *   @params valueToBeInserted the value that will be inserted in a specific cluster
+    *   parentNode a pointer to the cluster where the insertion will happen.
+    *   @return position in the cluster.
+     */
+    static uint32_t positionOfCluster(const uint32_t valueToBeInserted, VEBTree* parentNode);
 };
 
 #endif    // VAN_ENDE_BOAS_H
