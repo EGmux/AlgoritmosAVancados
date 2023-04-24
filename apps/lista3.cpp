@@ -38,14 +38,25 @@ int main(int argc, char* argv[]) {
         auto choiceOfOperation = (RngNext() % (freqInsertion + freqSucc + freqRemoval));
         if (choiceOfOperation < freqInsertion) {
             /* OP == "INS" */
+            auto valueToInsert = RngNext() % universeSize;
+            /* T.insert(valueToInsert) */
+            if(curOp%freqPrint==0)
+                std::cout << "I" << ' ' << "L" << '\n';
         } else if(choiceOfOperation < (freqInsertion + freqSucc)) {
             /* OP == "SUCC" */
+            auto valueToFind = RngNext() % universeSize;
+            /* T.succ(valueToFind) */
+            if(curOp%freqPrint==0)
+                std::cout << "S" << ' ' << "X'" << '\n';
         }
         else {
             /* OP == "DEL" */
+            /* IMPORTANTE: Caso a vEBT T não contenha o valor X antes dessa operação, consideramos L=0. */
+            auto valueToFind = RngNext() % universeSize;
+            /* T.succ(valueToFind)? valueToDelete=T.succ(valueToFind) : valueTodDelete = valueToFind*/
+            /* T.delete(valueToDelete) */
+            if(curOp%freqPrint==0)
+                std::cout << "D" << ' ' << "L" << '\n';
         }
-        std::cout << result << '\n';
     };
-    std::cout << '\n';    // blank line, signals end of current testcase
-    }
 };
