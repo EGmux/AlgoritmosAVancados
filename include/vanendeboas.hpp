@@ -1,9 +1,24 @@
 #ifndef VAN_ENDE_BOAS_H
 #define VAN_ENDE_BOAS_H
 
+#include <cstddef>
 #include <cstdint>
+#include <math.h>
+#include <memory>
 #include <vector>
 
+struct VEBTree{
+        std::vector<VEBTree*> m_subtrees;
+        VEBTree* m_summary;
+        uint32_t m_bitsize;
+        std::array<uint32_t,2> m_arrVals{0,0}; // by default nothing is present
+        int32_t min{-1};
+        int32_t max{-1}; // equivalent to nil, cast will be needed
+        
+        VEBTree(const uint32_t universeSize):m_subtrees(NULL),m_summary(NULL),m_bitsize(universeSize),m_arrVals(){
+            m_subtrees.resize(m_bitsize>>1); // resize because 0 is indeed the base case for an empty VEB
+        };
+    };
 class VanEndeBoas {
 public:
 
@@ -34,15 +49,17 @@ public:
     *   @return None
     * */
     void removal(const uint32_t valueToFind);
+
+    /* 
+    * @brief Return m_vebTREE used to initialize the tree for the first call of the constructor
+    * @params None
+    * @return m_vebTREE
+    */
+    VEBTree* get_Veb();
     
-    VanEndeBoas(const std::vector<uint32_t> &universe);
+     VanEndeBoas(const uint32_t universeSize,  VEBTree* parentNode);
     
 private:
-    struct VEBTree{
-        std::vector<VEBTree*> m_subtrees;
-        VEBTree* m_summary;
-        uint32_t m_bitsize;
-    };
     VEBTree* m_vebTREE;
 };
 
