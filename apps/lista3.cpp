@@ -30,8 +30,16 @@ int main(int argc, char* argv[]) {
 
     std::getline(std::cin, curLine);
     std::stringstream ss(curLine);
-    ss >> seed >> burnIn >> numOps >> numOps >> freqInsertion >>
+    ss >> seed >> universeSize >> burnIn >> numOps >> freqInsertion >>
         freqSucc >> freqRemoval >> freqPrint;    // parse testset
+
+    VEBTree* root;
+    VanEndeBoas vebTree(universeSize, root);
+    
+    vebTree.Insertion(root, seed%universeSize);
+    for(uint32_t insertionNum{1}; insertionNum < burnIn; ++insertionNum){
+        vebTree.Insertion( root, RngNext()%universeSize);
+    }
 
     uint32_t result;
     for (uint32_t curOp {0}; curOp < numOps; ++curOp) {
@@ -39,24 +47,25 @@ int main(int argc, char* argv[]) {
         if (choiceOfOperation < freqInsertion) {
             /* OP == "INS" */
             auto valueToInsert = RngNext() % universeSize;
-            /* T.insert(valueToInsert) */
+            int32_t depth = vebTree.Insertion(root, valueToInsert); 
             if(curOp%freqPrint==0)
-                std::cout << "I" << ' ' << "L" << '\n';
+                std::cout << "I" << ' ' << depth << '\n';
         } else if(choiceOfOperation < (freqInsertion + freqSucc)) {
             /* OP == "SUCC" */
             auto valueToFind = RngNext() % universeSize;
-            /* T.succ(valueToFind) */
+            auto succ = vebTree.Succ(root, valueToFind);
             if(curOp%freqPrint==0)
-                std::cout << "S" << ' ' << "X'" << '\n';
+                std::cout << "S" << ' ' << succ << '\n';
         }
         else {
             /* OP == "DEL" */
             /* IMPORTANTE: Caso a vEBT T não contenha o valor X antes dessa operação, consideramos L=0. */
             auto valueToFind = RngNext() % universeSize;
-            /* T.succ(valueToFind)? valueToDelete=T.succ(valueToFind) : valueTodDelete = valueToFind*/
-            /* T.delete(valueToDelete) */
+            auto succ = vebTree.Succ(root, valueToFind);
+            valueToFind = succ != -1? succ : valueToFind; 
+            int32_t depth = vebTree.Removal(valueToFind, root);
             if(curOp%freqPrint==0)
-                std::cout << "D" << ' ' << "L" << '\n';
+                std::cout << "D" << ' ' << depth << '\n';
         }
     };
 };
