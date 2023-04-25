@@ -5,6 +5,7 @@
 #include <cstdint>
 #include <math.h>
 #include <memory>
+#include <utility>
 #include <vector>
 
 struct VEBTree{
@@ -18,7 +19,9 @@ struct VEBTree{
             m_subtrees.resize(m_bitsize>>1); // resize because 0 is indeed the base case for an empty VEB
         };
     };
-    
+
+typedef std::pair<uint32_t,uint32_t> clusterCoordinates;
+
 class VanEndeBoas {
 public:
 
@@ -28,18 +31,20 @@ public:
     *   that is the insertion maps to an unique position in the universe set thus an unique subtree
     *   per tree traversal.
     *   @params valueToBeInserted the value to be inserted in the VEB.
+    *   parentNode the VEB tree being current traversed
     *   @return None
      */    
-    void insertion(VEBTree* parentNode , uint32_t valueToBeInserted);
+     void Insertion(VEBTree* parentNode , uint32_t valueToInsert);
     
     /*
     *   @brief Given a present value in the VEB find it succesor, to
     *   do so check that either the current node has the next bit set or 
     *   that the next next node with a bit set to the right has it.
     *   @params valueToFind the value to check for a sucessor
+    *   parentNode the VEB tree being current traversed
     *   @returns succ the succesor of valueToFind
      */
-    uint32_t succ(const uint32_t valueToFind);
+     uint32_t Succ(VEBTree* parentNode,const uint32_t valueToFind);
 
     /* 
     *   @brief Given a present value in the VEB remove it, to do so check that
@@ -48,7 +53,12 @@ public:
     *   @params valueToFind the value to remove
     *   @return None
     * */
-    void removal(const uint32_t valueToFind);
+     void Removal( uint32_t valueToFind, VEBTree* parentNode);
+
+    
+    
+private:
+    VEBTree* m_vebTREE;
 
     /* 
     * @brief Return m_vebTREE used to initialize the tree for the first call of the constructor
@@ -58,34 +68,15 @@ public:
     VEBTree* get_VEB();
     
      VanEndeBoas(const uint32_t universeSize,  VEBTree* parentNode);
-    
-private:
-    VEBTree* m_vebTREE;
 
     /* 
-    *   @brief Insert a value in an empty cluster of the VEB
-    *   @params valueToBeInserted the value to be inserted, note that
-    *   the min and max fields of the struct will be the same
-    *   parentNode pointer to node that will have it max and min fields updated.
-    *   @return None
-     */
-    static void emptyTreeInsertion(const uint32_t POSITION, VEBTree* parentNode);
-
-    /* 
-    *   @brief Return the position where a value can be inserted in a cluster 
+    *   @brief Return the position where a value can be inserted also the cluster num
     *   @params valueToBeInserted the value that will be inserted in a specific cluster
     *   parentNode a pointer to the cluster where the insertion will happen.
-    *   @return position in the cluster.
+    *   @return tuple<position,clusterNum> 
      */
-    static uint32_t positionInCluster(const uint32_t valueToBeInserted, VEBTree* parentNode);
+     static clusterCoordinates GetClusterCoordinates(const uint32_t valueToBeInserted, VEBTree* parentNode);
 
-    /* 
-    *   @brief Return the cluster where a value can be inserted
-    *   @params valueToBeInserted the value that will be inserted in a specific cluster
-    *   parentNode a pointer to the cluster where the insertion will happen.
-    *   @return position in the cluster.
-     */
-    static uint32_t positionOfCluster(const uint32_t valueToBeInserted, VEBTree* parentNode);
 };
 
 #endif    // VAN_ENDE_BOAS_H
