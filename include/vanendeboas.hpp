@@ -22,6 +22,9 @@ struct VEBTree{
 
 typedef std::pair<uint32_t,uint32_t> clusterCoordinates;
 
+
+
+
 class VanEndeBoas {
 public:
 
@@ -34,7 +37,7 @@ public:
     *   parentNode the VEB tree being current traversed
     *   @return None
      */    
-     void Insertion(VEBTree* parentNode , uint32_t valueToInsert);
+     int32_t Insertion(VEBTree* parentNode , uint32_t valueToInsert);
     
     /*
     *   @brief Given a present value in the VEB find it succesor, to
@@ -44,7 +47,7 @@ public:
     *   parentNode the VEB tree being current traversed
     *   @returns succ the succesor of valueToFind
      */
-     uint32_t Succ(VEBTree* parentNode,const uint32_t valueToFind);
+     int32_t Succ(VEBTree* parentNode,const uint32_t valueToFind);
 
     /* 
     *   @brief Given a present value in the VEB remove it, to do so check that
@@ -53,21 +56,14 @@ public:
     *   @params valueToFind the value to remove
     *   @return None
     * */
-     void Removal( uint32_t valueToFind, VEBTree* parentNode);
+     int32_t Removal( uint32_t valueToFind, VEBTree* parentNode);
 
+    VanEndeBoas(const uint32_t universeSize, VEBTree* parentNode);
     
     
 private:
-    VEBTree* m_vebTREE;
 
-    /* 
-    * @brief Return m_vebTREE used to initialize the tree for the first call of the constructor
-    * @params None
-    * @return m_vebTREE
-    */
-    VEBTree* get_VEB();
-    
-     VanEndeBoas(const uint32_t universeSize,  VEBTree* parentNode);
+    uint32_t m_depth{0};
 
     /* 
     *   @brief Return the position where a value can be inserted also the cluster num
