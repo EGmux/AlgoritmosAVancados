@@ -50,7 +50,7 @@ uint32_t VanEndeBoas::Succ(VEBTree* parentNode, const uint32_t valueToFind){
     /* Value to find is max of cluster or the next cluster, we need to traverse the summary to find the next non empty cluster  */
     auto clusterNumNew = Succ(parentNode->m_summary, clusterNum);
     auto clusterPosNew = parentNode->m_subtrees[clusterNumNew]->min;
-    return (clusterNum << (w >> 1)) | clusterPosNew;
+    return computeValue(clusterNumNew, w, clusterPosNew);
 }
 
 void VanEndeBoas::Insertion(VEBTree* parentNode, uint32_t valueToInsert){
@@ -79,3 +79,36 @@ void VanEndeBoas::Insertion(VEBTree* parentNode, uint32_t valueToInsert){
     }
 }
 
+void VanEndeBoas::Removal(uint32_t valueToFind, VEBTree *parentNode){
+    auto [clusterNum, clusterPos] = GetClusterCoordinates(valueToFind, parentNode);
+    auto w =parentNode->m_bitsize;
+    /* if the value to remove is the min of a node it must be recomputed  */
+    if(valueToFind == parentNode->min){
+        /* we find the first non empty cluster in the summary min field */
+        clusterNum = parentNode->m_summary->min;
+        /* such cluster is empty, then we can't even update the cluster's minimum */
+        if(clusterNum == NIL){
+            parentNode->min = NIL;
+            return;
+        }
+        auto clusterPosNew = parentNode->m_subtrees[clusterNum]->min;
+        /*  it must be the case that the cluster has at least one element to be the new mininmum*/
+        valueToFind = parentNode->min = computeValue(clusterNum, w, clusterPosNew);
+    }
+    /* we now neew to update the clusters *
+     did the cluster become empty after the update, we need to update the summary then */
+    Removal(valueToFind, parentNode);
+    if(parentNode->m_subtrees[clusterNum]->min == NIL){
+        Removal(valueToFind, parentNode->m_summary);
+    }
+    /* we still need to update the node's max, in this case is mininum because no other element is present  */
+    if(parentNode->m_summary->min == NIL){
+        parentNode->max = parentNode->min; // any other element besides the minimum?
+    }
+    else{
+        /* Summary is not empty so the only logical choice for max is the last non empty cluster  */
+        auto clusterNumNew = parentNode->m_summary->max; // this is the last non empty cluster
+        auto clusterPosNew = parentNode->m_subtrees[clusterNumNew]->max;
+        parentNode->max = computeValue(clusterNumNew, w, clusterPosNew);
+    }
+}
