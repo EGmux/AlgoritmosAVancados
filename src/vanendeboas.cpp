@@ -27,15 +27,14 @@ VanEndeBoas::VanEndeBoas(const uint32_t universeSize, VEBTree* parentNode){
     }
 }
 
-    /* We use this to initialize the above constructor */
-VEBTree* VanEndeBoas::get_VEB(){return m_vebTREE;}
 
 clusterCoordinates VanEndeBoas::GetClusterCoordinates(const uint32_t valueToBeInserted, VEBTree* parentNode){
     auto w = parentNode->m_bitsize;
     return clusterCoordinates{(valueToBeInserted >> (w >> 1)),(valueToBeInserted && (( 1 << (w >> 1)) -1))};
 }
 /* Below implementations were heavily inspired by this YT video: https://www.youtube.com/watch?v=q5QBydFU3GU */
-uint32_t VanEndeBoas::Succ(VEBTree* parentNode, const uint32_t valueToFind){
+/* notice that return value can be NIL, that is a macro for -1, that's the need for int32_t here */
+int32_t VanEndeBoas::Succ(VEBTree* parentNode, const uint32_t valueToFind){
     /* VEB global min is less than value to find, thus VEB global min must be the succesor */
     if(valueToFind < parentNode->min){
         return parentNode->min;
@@ -53,11 +52,15 @@ uint32_t VanEndeBoas::Succ(VEBTree* parentNode, const uint32_t valueToFind){
     return computeValue(clusterNumNew, w, clusterPosNew);
 }
 
-void VanEndeBoas::Insertion(VEBTree* parentNode, uint32_t valueToInsert){
+int32_t VanEndeBoas::Insertion(VEBTree* parentNode, uint32_t valueToInsert){
     /* if current node is empty, insert the value without repercussion */
     if(parentNode->min == NIL){
         parentNode->min = parentNode->max = valueToInsert;
+        auto depth = m_depth;
+        m_depth=0;
+        return depth;
     }
+    else if((valueToInsert == parentNode->min) || (valueToInsert == parentNode->max)){m_depth=0,0;}
     else{
         /* value to insert becomes the new current node min, we need to propagante such min and insert somewhere else */
         if(valueToInsert < parentNode->min){
@@ -72,14 +75,14 @@ void VanEndeBoas::Insertion(VEBTree* parentNode, uint32_t valueToInsert){
         /* if one of the pointed clusters is empty we can put the value there and update the summary, note the update requires a recursive call */
         auto [clusterNum, clusterPos] = GetClusterCoordinates(valueToInsert, parentNode);
         if(parentNode->m_subtrees[clusterNum]->min == NIL){
-            Insertion(parentNode->m_summary, clusterNum);
+            Insertion(parentNode->m_summary, clusterNum); //we don't update the depth for summary!
         }
         /* if the above condition is true, insertion is directly in the next cluster so o(1), else it'll be the only recursive call */
-        Insertion(parentNode->m_subtrees[clusterNum], clusterPos);
+        m_depth++,Insertion(parentNode->m_subtrees[clusterNum], clusterPos);
     }
 }
 
-void VanEndeBoas::Removal(uint32_t valueToFind, VEBTree *parentNode){
+int32_t VanEndeBoas::Removal(uint32_t valueToFind, VEBTree *parentNode){
     auto [clusterNum, clusterPos] = GetClusterCoordinates(valueToFind, parentNode);
     auto w =parentNode->m_bitsize;
     /* if the value to remove is the min of a node it must be recomputed  */
@@ -89,17 +92,20 @@ void VanEndeBoas::Removal(uint32_t valueToFind, VEBTree *parentNode){
         /* such cluster is empty, then we can't even update the cluster's minimum */
         if(clusterNum == NIL){
             parentNode->min = NIL;
-            return;
+            auto depth = m_depth;
+            m_depth=0;
+            return depth;
         }
         auto clusterPosNew = parentNode->m_subtrees[clusterNum]->min;
         /*  it must be the case that the cluster has at least one element to be the new mininmum*/
         valueToFind = parentNode->min = computeValue(clusterNum, w, clusterPosNew);
     }
+    else if(parentNode->min==NIL) {m_depth=0,0;} //can't find the number
     /* we now neew to update the clusters *
      did the cluster become empty after the update, we need to update the summary then */
-    Removal(valueToFind, parentNode);
+    m_depth++,Removal(clusterPos, parentNode->m_subtrees[clusterNum]);
     if(parentNode->m_subtrees[clusterNum]->min == NIL){
-        Removal(valueToFind, parentNode->m_summary);
+        Removal(clusterNum, parentNode->m_summary);
     }
     /* we still need to update the node's max, in this case is mininum because no other element is present  */
     if(parentNode->m_summary->min == NIL){
