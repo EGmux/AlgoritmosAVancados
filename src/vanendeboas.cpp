@@ -52,7 +52,7 @@ int32_t VanEndeBoas::Succ(VEBTree* parentNode, const uint32_t valueToFind){
     return computeValue(clusterNumNew, w, clusterPosNew);
 }
 
-int32_t VanEndeBoas::Insertion(VEBTree* parentNode, uint32_t valueToInsert){
+uint32_t VanEndeBoas::Insertion(VEBTree* parentNode, uint32_t valueToInsert){
     /* if current node is empty, insert the value without repercussion */
     if(parentNode->min == NIL){
         parentNode->min = parentNode->max = valueToInsert;
@@ -78,11 +78,13 @@ int32_t VanEndeBoas::Insertion(VEBTree* parentNode, uint32_t valueToInsert){
             Insertion(parentNode->m_summary, clusterNum); //we don't update the depth for summary!
         }
         /* if the above condition is true, insertion is directly in the next cluster so o(1), else it'll be the only recursive call */
-        m_depth++,Insertion(parentNode->m_subtrees[clusterNum], clusterPos);
+        m_depth++;
+        auto depth =Insertion(parentNode->m_subtrees[clusterNum], clusterPos);
+        return depth;
     }
 }
 
-int32_t VanEndeBoas::Removal(uint32_t valueToFind, VEBTree *parentNode){
+uint32_t VanEndeBoas::Removal(uint32_t valueToFind, VEBTree *parentNode){
     auto [clusterNum, clusterPos] = GetClusterCoordinates(valueToFind, parentNode);
     auto w =parentNode->m_bitsize;
     /* if the value to remove is the min of a node it must be recomputed  */
@@ -103,7 +105,8 @@ int32_t VanEndeBoas::Removal(uint32_t valueToFind, VEBTree *parentNode){
     else if(parentNode->min==NIL) {m_depth=0,0;} //can't find the number
     /* we now neew to update the clusters *
      did the cluster become empty after the update, we need to update the summary then */
-    m_depth++,Removal(clusterPos, parentNode->m_subtrees[clusterNum]);
+    m_depth++;
+    auto depth=Removal(clusterPos, parentNode->m_subtrees[clusterNum]);
     if(parentNode->m_subtrees[clusterNum]->min == NIL){
         Removal(clusterNum, parentNode->m_summary);
     }
@@ -117,4 +120,5 @@ int32_t VanEndeBoas::Removal(uint32_t valueToFind, VEBTree *parentNode){
         auto clusterPosNew = parentNode->m_subtrees[clusterNumNew]->max;
         parentNode->max = computeValue(clusterNumNew, w, clusterPosNew);
     }
+    return depth;
 }
