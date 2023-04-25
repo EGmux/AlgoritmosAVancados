@@ -16,13 +16,15 @@
     *   end condition of the recursion is whenever bitsize is equal to 1
     *   that would result in an empty leaf node.
     */
-VanEndeBoas::VanEndeBoas(const uint32_t universeSize, VEBTree* parentNode){
+VanEndeBoas::VanEndeBoas(const uint32_t universeSize, VEBTree** parentNode){
     if(universeSize > 1){
         const uint32_t clusterGroups = sqrt(universeSize);
-        parentNode = new VEBTree(universeSize);
-        VanEndeBoas(clusterGroups, parentNode->m_summary); // initialize the summary for each node
+        *parentNode = new VEBTree(universeSize);
+        VanEndeBoas(clusterGroups, &((*parentNode)->m_summary)); // initialize the summary for each node
+        if(clusterGroups == 1){return;}
         for(auto i{0}; i < clusterGroups;++i){
-            VanEndeBoas(clusterGroups, parentNode->m_subtrees[i]); // initialize each cluster node
+            VanEndeBoas(clusterGroups, &(*parentNode)->m_subtrees[i]);
+             // initialize each cluster node
         }
     }
 }
@@ -52,73 +54,73 @@ int32_t VanEndeBoas::Succ(VEBTree* parentNode, const uint32_t valueToFind){
     return computeValue(clusterNumNew, w, clusterPosNew);
 }
 
-uint32_t VanEndeBoas::Insertion(VEBTree* parentNode, uint32_t valueToInsert){
+uint32_t VanEndeBoas::Insertion(VEBTree** parentNode, uint32_t valueToInsert){
     /* if current node is empty, insert the value without repercussion */
-    if(parentNode->min == NIL){
-        parentNode->min = parentNode->max = valueToInsert;
+    if(*&(*parentNode)->min == NIL){
+        *&(*parentNode)->min = *&(*parentNode)->max = valueToInsert;
         auto depth = m_depth;
         m_depth=0;
         return depth;
     }
-    else if((valueToInsert == parentNode->min) || (valueToInsert == parentNode->max)){m_depth=0,0;}
+    else if((valueToInsert == *&(*parentNode)->min) || (valueToInsert == *&(*parentNode)->max)){m_depth=0,0;}
     else{
         /* value to insert becomes the new current node min, we need to propagante such min and insert somewhere else */
-        if(valueToInsert < parentNode->min){
-            auto tmpxch = parentNode->min;
-            parentNode->min = valueToInsert;
+        if(valueToInsert < *&(*parentNode)->min){
+            auto tmpxch = *&(*parentNode)->min;
+            *&(*parentNode)->min = valueToInsert;
             valueToInsert = tmpxch;
         }
         /* if value to insert is not the cluster min it could be the cluster max  */
-        if(valueToInsert > parentNode->max){
-            parentNode->max = valueToInsert;
+        if(valueToInsert > *&(*parentNode)->max){
+            *&(*parentNode)->max = valueToInsert;
         }
         /* if one of the pointed clusters is empty we can put the value there and update the summary, note the update requires a recursive call */
-        auto [clusterNum, clusterPos] = GetClusterCoordinates(valueToInsert, parentNode);
-        if(parentNode->m_subtrees[clusterNum]->min == NIL){
-            Insertion(parentNode->m_summary, clusterNum); //we don't update the depth for summary!
+        auto [clusterNum, clusterPos] = GetClusterCoordinates(valueToInsert, *&(*parentNode));
+        if(*&(*parentNode)->m_subtrees[clusterNum]->min == NIL){
+            Insertion(&(*parentNode)->m_summary, clusterNum); //we don't update the depth for summary!
         }
         /* if the above condition is true, insertion is directly in the next cluster so o(1), else it'll be the only recursive call */
         m_depth++;
-        auto depth =Insertion(parentNode->m_subtrees[clusterNum], clusterPos);
+        auto depth =Insertion(&(*parentNode)->m_subtrees[clusterNum], clusterPos);
         return depth;
     }
 }
 
-uint32_t VanEndeBoas::Removal(uint32_t valueToFind, VEBTree *parentNode){
-    auto [clusterNum, clusterPos] = GetClusterCoordinates(valueToFind, parentNode);
-    auto w =parentNode->m_bitsize;
+uint32_t VanEndeBoas::Removal(uint32_t valueToFind, VEBTree **parentNode){
+    auto [clusterNum, clusterPos] = GetClusterCoordinates(valueToFind, *parentNode);
+    auto w =*&(*parentNode)->m_bitsize;
     /* if the value to remove is the min of a node it must be recomputed  */
-    if(valueToFind == parentNode->min){
+    if(valueToFind == *&(*parentNode)->min){
         /* we find the first non empty cluster in the summary min field */
-        clusterNum = parentNode->m_summary->min;
+        clusterNum = *&(*parentNode)->m_summary->min;
         /* such cluster is empty, then we can't even update the cluster's minimum */
         if(clusterNum == NIL){
-            parentNode->min = NIL;
+            *&(*parentNode)->min = NIL;
             auto depth = m_depth;
             m_depth=0;
             return depth;
         }
-        auto clusterPosNew = parentNode->m_subtrees[clusterNum]->min;
+        auto clusterPosNew = *&(*parentNode)->m_subtrees[clusterNum]->min;
         /*  it must be the case that the cluster has at least one element to be the new mininmum*/
-        valueToFind = parentNode->min = computeValue(clusterNum, w, clusterPosNew);
+        valueToFind = *&(*parentNode)->min = computeValue(clusterNum, w, clusterPosNew);
     }
-    else if(parentNode->min==NIL) {m_depth=0,0;} //can't find the number
+    else if(*&(*parentNode)->min==NIL) {m_depth=0,0;} //can't find the number
     /* we now neew to update the clusters *
      did the cluster become empty after the update, we need to update the summary then */
     m_depth++;
-    auto depth=Removal(clusterPos, parentNode->m_subtrees[clusterNum]);
-    if(parentNode->m_subtrees[clusterNum]->min == NIL){
-        Removal(clusterNum, parentNode->m_summary);
+    auto depth=Removal(clusterPos, &(*parentNode)->m_subtrees[clusterNum]);
+    if(*&(*parentNode)->m_subtrees[clusterNum]->min == NIL){
+        Removal(clusterNum, &(*parentNode)->m_summary);
     }
     /* we still need to update the node's max, in this case is mininum because no other element is present  */
-    if(parentNode->m_summary->min == NIL){
-        parentNode->max = parentNode->min; // any other element besides the minimum?
+    if(*&(*parentNode)->m_summary->min == NIL){
+        *&(*parentNode)->max = *&(*parentNode)->min; // any other element besides the minimum?
     }
     else{
         /* Summary is not empty so the only logical choice for max is the last non empty cluster  */
-        auto clusterNumNew = parentNode->m_summary->max; // this is the last non empty cluster
-        auto clusterPosNew = parentNode->m_subtrees[clusterNumNew]->max;
-        parentNode->max = computeValue(clusterNumNew, w, clusterPosNew);
+        auto clusterNumNew = *&(*parentNode)->m_summary->max; // this is the last non empty cluster
+        auto clusterPosNew = *&(*parentNode)->m_subtrees[clusterNumNew]->max;
+        *&(*parentNode)->max = computeValue(clusterNumNew, w, clusterPosNew);
     }
     return depth;
 }

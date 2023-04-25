@@ -15,15 +15,15 @@ struct VEBTree{
         int32_t min{-1};
         int32_t max{-1}; // equivalent to nil, cast will be needed
         
-        VEBTree(const uint32_t universeSize):m_subtrees(NULL),m_summary(NULL),m_bitsize(universeSize){
-            m_subtrees.resize(m_bitsize>>1); // resize because 0 is indeed the base case for an empty VEB
+        VEBTree(const uint32_t universeSize):m_summary(NULL),m_bitsize(universeSize){
+            if(m_bitsize>2){
+            m_subtrees.reserve(m_bitsize>>1); // reserve because we'll pushback later, and this speedup things
+            m_subtrees.resize(m_bitsize >> 1);
+            }
         };
     };
 
 typedef std::pair<uint32_t,uint32_t> clusterCoordinates;
-
-
-
 
 class VanEndeBoas {
 public:
@@ -37,7 +37,7 @@ public:
     *   parentNode the VEB tree being current traversed
     *   @return None
      */    
-     int32_t Insertion(VEBTree* parentNode , uint32_t valueToInsert);
+     uint32_t Insertion(VEBTree** parentNode , uint32_t valueToInsert);
     
     /*
     *   @brief Given a present value in the VEB find it succesor, to
@@ -56,9 +56,9 @@ public:
     *   @params valueToFind the value to remove
     *   @return None
     * */
-     int32_t Removal( uint32_t valueToFind, VEBTree* parentNode);
+     uint32_t Removal( uint32_t valueToFind, VEBTree** parentNode);
 
-    VanEndeBoas(const uint32_t universeSize, VEBTree* parentNode);
+    VanEndeBoas(const uint32_t universeSize, VEBTree** parentNode);
     
     
 private:
