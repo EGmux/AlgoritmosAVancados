@@ -17,8 +17,8 @@ struct VEBTree{
         
         VEBTree(const uint32_t universeSize):m_summary(NULL),m_bitsize(universeSize){
             if(m_bitsize>2){
-            m_subtrees.reserve(m_bitsize>>1); // reserve because we'll pushback later, and this speedup things
-            m_subtrees.resize(m_bitsize >> 1);
+            m_subtrees.reserve(floor(sqrt(m_bitsize))); // reserve because we'll pushback later, and this speedup things
+            m_subtrees.resize(floor(sqrt(m_bitsize)));
             }
         };
     };
@@ -58,12 +58,21 @@ public:
     * */
      uint32_t Removal( uint32_t valueToFind, VEBTree** parentNode);
 
+
+     /* 
+     *  @brief Return depth after previous operation, note that after returning depth is reset
+     *  @params None 
+     *  @return None
+     *
+      */
+     uint32_t returnDepth();
+
     VanEndeBoas(const uint32_t universeSize, VEBTree** parentNode);
     
     
 private:
 
-    uint32_t m_depth{0};
+    uint32_t m_depth{1};
 
     /* 
     *   @brief Return the position where a value can be inserted also the cluster num
@@ -73,6 +82,12 @@ private:
      */
      static clusterCoordinates GetClusterCoordinates(const uint32_t valueToBeInserted, VEBTree* parentNode);
 
+    /* 
+    * @brief Reset m_depth to 1, that means the root depth
+    * @params None
+    * @return None
+     */
+     void resetDepth();
 };
 
 #endif    // VAN_ENDE_BOAS_H
