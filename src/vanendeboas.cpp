@@ -52,3 +52,30 @@ uint32_t VanEndeBoas::Succ(VEBTree* parentNode, const uint32_t valueToFind){
     auto clusterPosNew = parentNode->m_subtrees[clusterNumNew]->min;
     return (clusterNum << (w >> 1)) | clusterPosNew;
 }
+
+void VanEndeBoas::Insertion(VEBTree* parentNode, uint32_t valueToInsert){
+    /* if current node is empty, insert the value without repercussion */
+    if(parentNode->min == NIL){
+        parentNode->min = parentNode->max = valueToInsert;
+    }
+    else{
+        /* value to insert becomes the new current node min, we need to propagante such min and insert somewhere else */
+        if(valueToInsert < parentNode->min){
+            auto tmpxch = parentNode->min;
+            parentNode->min = valueToInsert;
+            valueToInsert = tmpxch;
+        }
+        /* if value to insert is not the cluster min it could be the cluster max  */
+        if(valueToInsert > parentNode->max){
+            parentNode->max = valueToInsert;
+        }
+        /* if one of the pointed clusters is empty we can put the value there and update the summary, note the update requires a recursive call */
+        auto [clusterNum, clusterPos] = GetClusterCoordinates(valueToInsert, parentNode);
+        if(parentNode->m_subtrees[clusterNum]->min == NIL){
+            Insertion(parentNode->m_summary, clusterNum);
+        }
+        /* if the above condition is true, insertion is directly in the next cluster so o(1), else it'll be the only recursive call */
+        Insertion(parentNode->m_subtrees[clusterNum], clusterPos);
+    }
+}
+
