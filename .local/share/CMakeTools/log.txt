@@ -1,60 +1,72 @@
-2023-04-26T17:28:18.384Z [debug] [main] Safe constructing new CMakeProject instance
-2023-04-26T17:28:18.385Z [debug] [variant] Constructing VariantManager
-2023-04-26T17:28:18.387Z [debug] [main] Constructing new CMakeProject instance
-2023-04-26T17:28:18.388Z [debug] [main] Starting CMake Tools second-phase init
-2023-04-26T17:28:19.836Z [info] [variant] Loaded new set of variants
-2023-04-26T17:28:19.904Z [debug] [kit] Not reading non-existent kits file: /root/.local/share/CMakeTools/cmake-tools-kits.json
-2023-04-26T17:28:19.939Z [debug] [kit] Not reading non-existent kits file: /root/.vscode/cmake-kits.json
-2023-04-26T17:28:19.943Z [debug] [presetController] Reading presets file /root/CMakePresets.json
-2023-04-26T17:28:20.194Z [info] [presetController] Successfully validated presets in /root/CMakePresets.json
-2023-04-26T17:28:20.283Z [info] [proc] Executing command: uname -s
-2023-04-26T17:28:20.353Z [debug] [main] Resolving the selected configure preset
-2023-04-26T17:28:20.363Z [debug] [main] Loading new configure preset into CMake driver
-2023-04-26T17:28:20.501Z [debug] [main] Resolving the selected build preset
-2023-04-26T17:28:20.526Z [debug] [main] Loading new build preset into CMake driver
-2023-04-26T17:28:20.909Z [debug] [main] CMakeProject instance initialization complete.
-2023-04-26T17:28:20.992Z [debug] [extension] Configuring workspace on open /root
-2023-04-26T17:28:20.998Z [info] [proc] Executing command: /usr/bin/cmake --version
-2023-04-26T17:28:21.192Z [debug] [main] Starting new CMake driver
-2023-04-26T17:28:21.193Z [debug] [main] Starting CMake driver
-2023-04-26T17:28:21.194Z [debug] [cmakefileapi-driver] Creating instance of CMakeFileApiDriver
-2023-04-26T17:28:21.196Z [debug] [driver] Initializating base driver using preset
-2023-04-26T17:28:21.196Z [debug] [driver] CMakeDriver configure preset set to linux-debug
-2023-04-26T17:28:21.197Z [debug] [driver] CMakeDriver build preset set to __defaultBuildPreset__
-2023-04-26T17:28:21.203Z [debug] [cache] Reading CMake cache file /root/out/build/linux-debug/CMakeCache.txt
-2023-04-26T17:28:21.206Z [debug] [cache] Parsing CMake cache string
-2023-04-26T17:28:21.242Z [debug] [cache] Reading CMake cache file /root/out/build/linux-debug/CMakeCache.txt
-2023-04-26T17:28:21.456Z [debug] [cache] Parsing CMake cache string
-2023-04-26T17:28:21.503Z [debug] [cmakefileapi-parser] Read reply folder: /root/out/build/linux-debug/.cmake/api/v1/reply
-2023-04-26T17:28:21.515Z [debug] [cmakefileapi-parser] Found index files: ["cache-v2-f75c3af42c9036201464.json","cmakeFiles-v1-638fc34434c5abb97666.json","codemodel-v2-09dfc7198464ee8e35e5.json","directory-.-Debug-f5ebdc15457944623624.json","directory-AlgoritmosAVancados-Debug-d4abafbe1556628a1fe3.json","directory-_deps.googletest-build-Debug-99c5d7a7a0b85a3a644e.json","directory-_deps.googletest-build.googlemock-Debug-228624ceb506d5608766.json","directory-_deps.googletest-build.googletest-Debug-5085980a952fb03a9a31.json","index-2023-04-26T17-11-31-0189.json","target-AlgoritmosAVancados-Debug-db9423f8b4a74d4c263a.json","target-SkipListTests-Debug-c1f600aaf15bc6b9102d.json","target-SkipListlib-Debug-1827030b6c3150b5c16e.json","target-gmock-Debug-96c42acb14c5ea20b0cf.json","target-gmock_main-Debug-5cde6397b596f731be76.json","target-gtest-Debug-0af3da330218ae7f02ae.json","target-gtest_main-Debug-33dd5494579a36f40f47.json","target-main-Debug-d33a46aa0244a24e3070.json","toolchains-v1-ffb6434f9d66dd28afdb.json"]
-2023-04-26T17:28:21.536Z [debug] [driver] Setting new variant Debug
-2023-04-26T17:28:21.542Z [debug] [extension] Not updating the configuration provider because "C_Cpp.intelliSenseEngine" is set to "Disabled"
-2023-04-26T17:28:21.636Z [info] [main] Configuring project: root 
-2023-04-26T17:28:21.636Z [debug] [main] Saving open files before configure/build
-2023-04-26T17:28:21.790Z [debug] [driver] Start configure 
-2023-04-26T17:28:21.790Z [debug] [driver] Running pre-configure checks and steps
-2023-04-26T17:28:21.795Z [debug] [cmakefileapi-driver] Configuring using preset
-2023-04-26T17:28:21.795Z [debug] [cmakefileapi-driver] Invoking CMake /usr/bin/cmake with arguments ["-DCMAKE_BUILD_TYPE=Debug","-DCMAKE_INSTALL_PREFIX=/root/out/install/linux-debug","-S/root","-B/root/out/build/linux-debug","-G","Ninja"]
-2023-04-26T17:28:21.796Z [info] [proc] Executing command: /usr/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=/root/out/install/linux-debug -S/root -B/root/out/build/linux-debug -G Ninja
-2023-04-26T17:28:21.796Z [debug] [proc]   with environment: {"HOME":"/root","container":"podman","TERM":"xterm","PATH":"/root/.vscode-server/bin/704ed70d4fd1c6bd6342c436f1ede30d1cff4710/bin/remote-cli:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin","VSCODE_AGENT_FOLDER":"/root/.vscode-server","SHELL":"/bin/bash","PWD":"/root/.vscode-server/bin/704ed70d4fd1c6bd6342c436f1ede30d1cff4710","VSCODE_HANDLES_SIGPIPE":"true","VSCODE_AMD_ENTRYPOINT":"vs/workbench/api/node/extensionHostProcess","VSCODE_HANDLES_UNCAUGHT_ERRORS":"true","VSCODE_NLS_CONFIG":"{\"locale\":\"en\",\"osLocale\":\"en\",\"availableLanguages\":{}}","REMOTE_CONTAINERS_IPC":"/tmp/vscode-remote-containers-ipc-4eb3e8d7-d171-478c-845b-afe8b27ca96e.sock","REMOTE_CONTAINERS_SOCKETS":"[\"/tmp/vscode-ssh-auth-4eb3e8d7-d171-478c-845b-afe8b27ca96e.sock\",\"/tmp/.X11-unix/X31\",\"/root/.gnupg/S.gpg-agent\"]","SHLVL":"1","DEBUGINFOD_URLS":"","_":"/usr/bin/cat","SSH_AUTH_SOCK":"/tmp/vscode-ssh-auth-4eb3e8d7-d171-478c-845b-afe8b27ca96e.sock","DISPLAY":":31","REMOTE_CONTAINERS_DISPLAY_SOCK":"/tmp/.X11-unix/X31","REMOTE_CONTAINERS":"true","BROWSER":"/root/.vscode-server/bin/704ed70d4fd1c6bd6342c436f1ede30d1cff4710/bin/helpers/browser.sh","VSCODE_CWD":"/root/.vscode-server/bin/704ed70d4fd1c6bd6342c436f1ede30d1cff4710","ELECTRON_RUN_AS_NODE":"1","VSCODE_IPC_HOOK_CLI":"/tmp/vscode-ipc-00dd7516-9ad2-4fa6-81d2-37af87a8183d.sock","APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL":"1","VSCODE_L10N_BUNDLE_LOCATION":""}
-2023-04-26T17:28:22.134Z [info] [cmake] -- Configuring done
-2023-04-26T17:28:22.156Z [info] [cmake] -- Generating done
-2023-04-26T17:28:22.181Z [info] [cmake] -- Build files have been written to: /root/out/build/linux-debug
-2023-04-26T17:28:22.186Z [debug] [cmakefileapi-parser] Read reply folder: /root/out/build/linux-debug/.cmake/api/v1/reply
-2023-04-26T17:28:22.188Z [debug] [cmakefileapi-parser] Found index files: ["cache-v2-f75c3af42c9036201464.json","cmakeFiles-v1-638fc34434c5abb97666.json","codemodel-v2-09dfc7198464ee8e35e5.json","directory-.-Debug-f5ebdc15457944623624.json","directory-AlgoritmosAVancados-Debug-d4abafbe1556628a1fe3.json","directory-_deps.googletest-build-Debug-99c5d7a7a0b85a3a644e.json","directory-_deps.googletest-build.googlemock-Debug-228624ceb506d5608766.json","directory-_deps.googletest-build.googletest-Debug-5085980a952fb03a9a31.json","index-2023-04-26T17-28-22-0180.json","target-AlgoritmosAVancados-Debug-db9423f8b4a74d4c263a.json","target-SkipListTests-Debug-c1f600aaf15bc6b9102d.json","target-SkipListlib-Debug-1827030b6c3150b5c16e.json","target-gmock-Debug-96c42acb14c5ea20b0cf.json","target-gmock_main-Debug-5cde6397b596f731be76.json","target-gtest-Debug-0af3da330218ae7f02ae.json","target-gtest_main-Debug-33dd5494579a36f40f47.json","target-main-Debug-d33a46aa0244a24e3070.json","toolchains-v1-ffb6434f9d66dd28afdb.json"]
-2023-04-26T17:28:22.206Z [debug] [extension] Not updating the configuration provider because "C_Cpp.intelliSenseEngine" is set to "Disabled"
-2023-04-26T17:28:22.365Z [debug] [extension] Not updating the configuration provider because "C_Cpp.intelliSenseEngine" is set to "Disabled"
-root/out/build/linux-debug/CMakeCache.txt
-2023-04-26T17:05:16.298Z [debug] [cache] Parsing CMake cache string
-2023-04-26T17:10:15.406Z [debug] [main] Detected saving of CMakeLists.txt, attempting automatic reconfigure...
-2023-04-26T17:10:15.411Z [info] [main] Configuring project: root 
-2023-04-26T17:10:15.412Z [debug] [main] Saving open files before configure/build
-2023-04-26T17:10:15.498Z [debug] [driver] Start configure 
-2023-04-26T17:10:15.499Z [debug] [driver] Running pre-configure checks and steps
-2023-04-26T17:10:15.504Z [debug] [cmakefileapi-driver] Configuring using preset
-2023-04-26T17:10:15.505Z [debug] [cmakefileapi-driver] Invoking CMake /usr/bin/cmake with arguments ["-DCMAKE_BUILD_TYPE=Debug","-DCMAKE_INSTALL_PREFIX=/root/out/install/linux-debug","-S/root","-B/root/out/build/linux-debug","-G","Ninja"]
-2023-04-26T17:10:15.507Z [info] [proc] Executing command: /usr/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=/root/out/install/linux-debug -S/root -B/root/out/build/linux-debug -G Ninja
-2023-04-26T17:10:15.510Z [debug] [proc]   with environment: {"HOME":"/root","container":"podman","TERM":"xterm","PATH":"/root/.vscode-server/bin/704ed70d4fd1c6bd6342c436f1ede30d1cff4710/bin/remote-cli:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin","VSCODE_AGENT_FOLDER":"/root/.vscode-server","SHELL":"/bin/bash","PWD":"/root/.vscode-server/bin/704ed70d4fd1c6bd6342c436f1ede30d1cff4710","VSCODE_HANDLES_SIGPIPE":"true","VSCODE_AMD_ENTRYPOINT":"vs/workbench/api/node/extensionHostProcess","VSCODE_HANDLES_UNCAUGHT_ERRORS":"true","VSCODE_NLS_CONFIG":"{\"locale\":\"en\",\"osLocale\":\"en\",\"availableLanguages\":{}}","REMOTE_CONTAINERS_IPC":"/tmp/vscode-remote-containers-ipc-d79de8d1-85bd-4092-8fcc-cc65216ffae0.sock","REMOTE_CONTAINERS_SOCKETS":"[\"/tmp/vscode-ssh-auth-d79de8d1-85bd-4092-8fcc-cc65216ffae0.sock\",\"/tmp/.X11-unix/X30\",\"/root/.gnupg/S.gpg-agent\"]","SHLVL":"1","DEBUGINFOD_URLS":"","_":"/usr/bin/cat","SSH_AUTH_SOCK":"/tmp/vscode-ssh-auth-d79de8d1-85bd-4092-8fcc-cc65216ffae0.sock","DISPLAY":":30","REMOTE_CONTAINERS_DISPLAY_SOCK":"/tmp/.X11-unix/X30","REMOTE_CONTAINERS":"true","BROWSER":"/root/.vscode-server/bin/704ed70d4fd1c6bd6342c436f1ede30d1cff4710/bin/helpers/browser.sh","VSCODE_CWD":"/root/.vscode-server/bin/704ed70d4fd1c6bd6342c436f1ede30d1cff4710","ELECTRON_RUN_AS_NODE":"1","VSCODE_IPC_HOOK_CLI":"/tmp/vscode-ipc-2c01262e-3b21-41f3-b58b-3b6e6ae54732.sock","APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL":"1","VSCODE_L10N_BUNDLE_LOCATION":""}
+2023-04-26T21:09:13.256Z [debug] [main] Safe constructing new CMakeProject instance
+2023-04-26T21:09:13.257Z [debug] [variant] Constructing VariantManager
+2023-04-26T21:09:13.258Z [debug] [main] Constructing new CMakeProject instance
+2023-04-26T21:09:13.258Z [debug] [main] Starting CMake Tools second-phase init
+2023-04-26T21:09:13.352Z [info] [variant] Loaded new set of variants
+2023-04-26T21:09:13.354Z [debug] [kit] Not reading non-existent kits file: /root/.local/share/CMakeTools/cmake-tools-kits.json
+2023-04-26T21:09:13.356Z [debug] [kit] Not reading non-existent kits file: /root/.vscode/cmake-kits.json
+2023-04-26T21:09:13.358Z [debug] [presetController] Reading presets file /root/CMakePresets.json
+2023-04-26T21:09:13.427Z [info] [presetController] Successfully validated presets in /root/CMakePresets.json
+2023-04-26T21:09:13.519Z [info] [proc] Executing command: uname -s
+2023-04-26T21:09:13.534Z [debug] [main] Resolving the selected configure preset
+2023-04-26T21:09:13.537Z [debug] [main] Loading new configure preset into CMake driver
+2023-04-26T21:09:13.596Z [debug] [main] Resolving the selected build preset
+2023-04-26T21:09:13.623Z [debug] [main] Loading new build preset into CMake driver
+2023-04-26T21:09:13.665Z [debug] [main] CMakeProject instance initialization complete.
+2023-04-26T21:09:13.721Z [debug] [extension] Configuring workspace on open /root
+2023-04-26T21:09:13.724Z [info] [proc] Executing command: /usr/bin/cmake --version
+2023-04-26T21:09:13.740Z [debug] [main] Starting new CMake driver
+2023-04-26T21:09:13.741Z [debug] [main] Starting CMake driver
+2023-04-26T21:09:13.741Z [debug] [cmakefileapi-driver] Creating instance of CMakeFileApiDriver
+2023-04-26T21:09:13.742Z [debug] [driver] Initializating base driver using preset
+2023-04-26T21:09:13.742Z [debug] [driver] CMakeDriver configure preset set to linux-debug
+2023-04-26T21:09:13.742Z [debug] [driver] CMakeDriver build preset set to __defaultBuildPreset__
+2023-04-26T21:09:13.745Z [debug] [cache] Reading CMake cache file /root/out/build/linux-debug/CMakeCache.txt
+2023-04-26T21:09:13.746Z [debug] [cache] Parsing CMake cache string
+2023-04-26T21:09:13.759Z [debug] [cache] Reading CMake cache file /root/out/build/linux-debug/CMakeCache.txt
+2023-04-26T21:09:13.761Z [debug] [cache] Parsing CMake cache string
+2023-04-26T21:09:13.770Z [debug] [cmakefileapi-parser] Read reply folder: /root/out/build/linux-debug/.cmake/api/v1/reply
+2023-04-26T21:09:13.770Z [debug] [cmakefileapi-parser] Found index files: ["cache-v2-f75c3af42c9036201464.json","cmakeFiles-v1-638fc34434c5abb97666.json","codemodel-v2-09dfc7198464ee8e35e5.json","directory-.-Debug-f5ebdc15457944623624.json","directory-AlgoritmosAVancados-Debug-d4abafbe1556628a1fe3.json","directory-_deps.googletest-build-Debug-99c5d7a7a0b85a3a644e.json","directory-_deps.googletest-build.googlemock-Debug-228624ceb506d5608766.json","directory-_deps.googletest-build.googletest-Debug-5085980a952fb03a9a31.json","index-2023-04-26T21-04-46-0517.json","target-AlgoritmosAVancados-Debug-db9423f8b4a74d4c263a.json","target-SkipListTests-Debug-c1f600aaf15bc6b9102d.json","target-SkipListlib-Debug-1827030b6c3150b5c16e.json","target-gmock-Debug-96c42acb14c5ea20b0cf.json","target-gmock_main-Debug-5cde6397b596f731be76.json","target-gtest-Debug-0af3da330218ae7f02ae.json","target-gtest_main-Debug-33dd5494579a36f40f47.json","target-main-Debug-d33a46aa0244a24e3070.json","toolchains-v1-ffb6434f9d66dd28afdb.json"]
+2023-04-26T21:09:13.774Z [debug] [driver] Setting new variant Debug
+2023-04-26T21:09:13.776Z [debug] [extension] Not updating the configuration provider because "C_Cpp.intelliSenseEngine" is set to "Disabled"
+2023-04-26T21:09:13.797Z [info] [main] Configuring project: root 
+2023-04-26T21:09:13.797Z [debug] [main] Saving open files before configure/build
+2023-04-26T21:09:13.857Z [debug] [driver] Start configure 
+2023-04-26T21:09:13.857Z [debug] [driver] Running pre-configure checks and steps
+2023-04-26T21:09:13.859Z [debug] [cmakefileapi-driver] Configuring using preset
+2023-04-26T21:09:13.859Z [debug] [cmakefileapi-driver] Invoking CMake /usr/bin/cmake with arguments ["-DCMAKE_BUILD_TYPE=Debug","-DCMAKE_INSTALL_PREFIX=/root/out/install/linux-debug","-S/root","-B/root/out/build/linux-debug","-G","Ninja"]
+2023-04-26T21:09:13.860Z [info] [proc] Executing command: /usr/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=/root/out/install/linux-debug -S/root -B/root/out/build/linux-debug -G Ninja
+2023-04-26T21:09:13.860Z [debug] [proc]   with environment: {"HOME":"/root","container":"podman","TERM":"xterm","PATH":"/root/.vscode-server/bin/704ed70d4fd1c6bd6342c436f1ede30d1cff4710/bin/remote-cli:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin","VSCODE_AGENT_FOLDER":"/root/.vscode-server","SHELL":"/bin/bash","PWD":"/root/.vscode-server/bin/704ed70d4fd1c6bd6342c436f1ede30d1cff4710","VSCODE_HANDLES_SIGPIPE":"true","VSCODE_AMD_ENTRYPOINT":"vs/workbench/api/node/extensionHostProcess","VSCODE_HANDLES_UNCAUGHT_ERRORS":"true","VSCODE_NLS_CONFIG":"{\"locale\":\"en\",\"osLocale\":\"en\",\"availableLanguages\":{}}","REMOTE_CONTAINERS_IPC":"/tmp/vscode-remote-containers-ipc-01c24d90-7d82-4599-9d39-10248ac950b2.sock","REMOTE_CONTAINERS_SOCKETS":"[\"/tmp/vscode-ssh-auth-01c24d90-7d82-4599-9d39-10248ac950b2.sock\",\"/tmp/.X11-unix/X3\",\"/root/.gnupg/S.gpg-agent\"]","SHLVL":"1","DEBUGINFOD_URLS":"","_":"/usr/bin/cat","SSH_AUTH_SOCK":"/tmp/vscode-ssh-auth-01c24d90-7d82-4599-9d39-10248ac950b2.sock","DISPLAY":":3","REMOTE_CONTAINERS_DISPLAY_SOCK":"/tmp/.X11-unix/X3","REMOTE_CONTAINERS":"true","BROWSER":"/root/.vscode-server/bin/704ed70d4fd1c6bd6342c436f1ede30d1cff4710/bin/helpers/browser.sh","VSCODE_CWD":"/root/.vscode-server/bin/704ed70d4fd1c6bd6342c436f1ede30d1cff4710","ELECTRON_RUN_AS_NODE":"1","VSCODE_IPC_HOOK_CLI":"/tmp/vscode-ipc-18a1b747-6abd-4de5-8895-5b035ecfa12c.sock","APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL":"1","VSCODE_L10N_BUNDLE_LOCATION":""}
+2023-04-26T21:09:13.970Z [info] [cmake] -- Configuring done
+2023-04-26T21:09:13.976Z [info] [cmake] -- Generating done
+2023-04-26T21:09:13.984Z [info] [cmake] -- Build files have been written to: /root/out/build/linux-debug
+2023-04-26T21:09:13.987Z [debug] [cmakefileapi-parser] Read reply folder: /root/out/build/linux-debug/.cmake/api/v1/reply
+2023-04-26T21:09:13.988Z [debug] [cmakefileapi-parser] Found index files: ["cache-v2-f75c3af42c9036201464.json","cmakeFiles-v1-638fc34434c5abb97666.json","codemodel-v2-09dfc7198464ee8e35e5.json","directory-.-Debug-f5ebdc15457944623624.json","directory-AlgoritmosAVancados-Debug-d4abafbe1556628a1fe3.json","directory-_deps.googletest-build-Debug-99c5d7a7a0b85a3a644e.json","directory-_deps.googletest-build.googlemock-Debug-228624ceb506d5608766.json","directory-_deps.googletest-build.googletest-Debug-5085980a952fb03a9a31.json","index-2023-04-26T21-09-13-0984.json","target-AlgoritmosAVancados-Debug-db9423f8b4a74d4c263a.json","target-SkipListTests-Debug-c1f600aaf15bc6b9102d.json","target-SkipListlib-Debug-1827030b6c3150b5c16e.json","target-gmock-Debug-96c42acb14c5ea20b0cf.json","target-gmock_main-Debug-5cde6397b596f731be76.json","target-gtest-Debug-0af3da330218ae7f02ae.json","target-gtest_main-Debug-33dd5494579a36f40f47.json","target-main-Debug-d33a46aa0244a24e3070.json","toolchains-v1-ffb6434f9d66dd28afdb.json"]
+2023-04-26T21:09:13.992Z [debug] [extension] Not updating the configuration provider because "C_Cpp.intelliSenseEngine" is set to "Disabled"
+2023-04-26T21:09:14.148Z [debug] [extension] Not updating the configuration provider because "C_Cpp.intelliSenseEngine" is set to "Disabled"
+2023-04-26T21:11:06.894Z [debug] [presetController] Reading presets file /root/CMakePresets.json
+2023-04-26T21:11:06.991Z [info] [presetController] Successfully validated presets in /root/CMakePresets.json
+2023-04-26T21:11:06.992Z [debug] [main] Resolving the selected configure preset
+2023-04-26T21:11:06.994Z [debug] [main] Loading new configure preset into CMake driver
+2023-04-26T21:11:06.994Z [info] [driver] Switching to configure preset: linux-debug
+2023-04-26T21:11:06.995Z [debug] [driver] CMakeDriver configure preset set to linux-debug
+2023-04-26T21:11:07.003Z [debug] [main] Resolving the selected build preset
+2023-04-26T21:11:07.008Z [debug] [extension] Not updating the configuration provider because "C_Cpp.intelliSenseEngine" is set to "Disabled"
+2023-04-26T21:11:07.008Z [debug] [main] Loading new build preset into CMake driver
+2023-04-26T21:11:07.008Z [info] [driver] Switching to build preset: __defaultBuildPreset__
+2023-04-26T21:11:07.009Z [debug] [driver] CMakeDriver build preset set to __defaultBuildPreset__
+2023-04-26T21:11:07.141Z [debug] [presetController] Reading presets file /root/CMakePresets.json
+2023-04-26T21:11:07.252Z [info] [presetController] Successfully validated presets in /root/CMakePresets.json
+2023-04-26T21:11:07.254Z [debug] [main] Resolving the selected configure preset
+2023-04-26T21:11:07.258Z [debug] [main] Loading new configure preset into CMake driver
+2023-04-26T21:11:07.258Z [info] [driver] Switching to configure preset: linux-debug
+2023-04-26T21:11:07.258Z [debug] [driver] CMakeDriver configure preset set to linux-debug
+2023-04-26T21:11:07.265Z [debug] [main] Resolving the selected build preset
+2023-04-26T21:11:07.270Z [debug] [extension] Not updating the configuration provider because "C_Cpp.intelliSenseEngine" is set to "Disabled"
+2023-04-26T21:11:07.270Z [debug] [main] Loading new build preset into CMake driver
+2023-04-26T21:11:07.270Z [info] [driver] Switching to build preset: __defaultBuildPreset__
+2023-04-26T21:11:07.270Z [debug] [driver] CMakeDriver build preset set to __defaultBuildPreset__
+ONTAINERS_DISPLAY_SOCK":"/tmp/.X11-unix/X30","REMOTE_CONTAINERS":"true","BROWSER":"/root/.vscode-server/bin/704ed70d4fd1c6bd6342c436f1ede30d1cff4710/bin/helpers/browser.sh","VSCODE_CWD":"/root/.vscode-server/bin/704ed70d4fd1c6bd6342c436f1ede30d1cff4710","ELECTRON_RUN_AS_NODE":"1","VSCODE_IPC_HOOK_CLI":"/tmp/vscode-ipc-2c01262e-3b21-41f3-b58b-3b6e6ae54732.sock","APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL":"1","VSCODE_L10N_BUNDLE_LOCATION":""}
 2023-04-26T17:10:15.568Z [error] [cmake] CMake Error at CMakeLists.txt:21 (target_include_directories):
 2023-04-26T17:10:15.570Z [error] [cmake]   Cannot specify include directories for target "SkipListlib" which is not
 2023-04-26T17:10:15.571Z [error] [cmake]   built by this project.
