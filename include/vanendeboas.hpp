@@ -34,10 +34,11 @@ public:
     *   that is the insertion maps to an unique position in the universe set thus an unique subtree
     *   per tree traversal.
     *   @params valueToBeInserted the value to be inserted in the VEB.
+    *   ancestral node is used to check if current node is summary or not
     *   parentNode the VEB tree being current traversed
     *   @return None
      */    
-     uint32_t Insertion(VEBTree** parentNode , uint32_t valueToInsert);
+     uint32_t Insertion(VEBTree** parentNode , uint32_t valueToInsert, VEBTree* ancestralNode);
     
     /*
     *   @brief Given a present value in the VEB find it succesor, to
@@ -54,9 +55,10 @@ public:
     *   the value is present and set it bit to 0, then update the summary field 
     *   of current and ancestral nodes if needed.
     *   @params valueToFind the value to remove
+    *   ancestral node is used to check if current node is summary or not
     *   @return None
     * */
-     uint32_t Removal( uint32_t valueToFind, VEBTree** parentNode);
+     uint32_t Removal( uint32_t valueToFind, VEBTree** parentNode, VEBTree* ancestralNode);
 
 
      /* 

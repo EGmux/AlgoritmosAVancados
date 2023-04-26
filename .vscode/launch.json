@@ -7,7 +7,7 @@
         "type": "cppdbg",
         "request": "launch",
         "program": "${workspaceRoot}/out/build/linux-debug/main",
-        "args": ["<","${workspaceRoot}/testcases/sparsetable/2.in",">","${workspaceRoot}/testcases/sparsetable/2test.out"],
+        "args": ["<","${workspaceRoot}/testcases/vanemdeboas/1.in",">","${workspaceRoot}/testcases/vanemdeboas/1test.out"],
         "stopAtEntry": false,
         "cwd": "${workspaceFolder}",
         "environment": [],
