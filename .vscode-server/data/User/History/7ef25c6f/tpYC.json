@@ -1,0 +1,109 @@
+{
+  "cmake.configureOnOpen": true,
+    "vim.hlsearch": true,
+    "[python]": {
+      "editor.formatOnType": true
+    },
+        "background.fullscreen": {
+          "image":  [ "https://w.wallhaven.cc/full/2y/wallhaven-2yd87x.png", // url of your image
+                      "https://w.wallhaven.cc/full/jx/wallhaven-jxwro5.png",
+                      "https://w.wallhaven.cc/full/rr/wallhaven-rrgo8q.jpg",
+                    "https://w.wallhaven.cc/full/7p/wallhaven-7p98q3.png",
+                    "https://w.wallhaven.cc/full/2y/wallhaven-2y1qey.jpg",
+                    "https://w.wallhaven.cc/full/9d/wallhaven-9doglx.png",
+                    "https://w.wallhaven.cc/full/l8/wallhaven-l8y212.jpg",
+                    "https://w.wallhaven.cc/full/p9/wallhaven-p9oypp.png",
+                    "https://w.wallhaven.cc/full/l8/wallhaven-l8y2yl.jpg",
+                    "https://w.wallhaven.cc/full/vq/wallhaven-vqqw9m.png",
+                    "https://w.wallhaven.cc/full/9d/wallhaven-9ddg3x.png",
+                    "https://w.wallhaven.cc/full/zy/wallhaven-zyy96j.png",
+                    "https://w.wallhaven.cc/full/7p/wallhaven-7ppw6y.jpg",
+                    "https://w.wallhaven.cc/full/zy/wallhaven-zyyzlg.jpg",
+                    "https://w.wallhaven.cc/full/p9/wallhaven-p993me.png",
+                    "https://w.wallhaven.cc/full/7p/wallhaven-7p2dqy.png"
+        ],
+          // "image": ["https://pathtoimage.png"], // An array may be useful when set interval for carousel
+          "opacity": 0.95, // 0.85 ~ 0.95 recommended
+          "size": "cover", // also css, `cover` to self-adaption (recommended)，or `contain`、`200px 200px`
+          "position": "center", // alias to `background-position`, default `center`
+          "loop": "true",
+          "interval": 1800 // seconds of interval for carousel, default `0` to disabled.
+        },
+        "workbench.editor.scrollToSwitchTabs": true,
+        "editor.fontFamily": "'PragmataPro'",
+        "terminal.integrated.fontFamily": "'PragmataPro Mono'",
+        "workbench.iconTheme": "material-icon-theme",
+        "gitdoc.enabled": true,
+        "gitdoc.filePattern": "**/*.{md,todo}",
+        "gitdoc.pullOnOpen": false,
+        "git.confirmSync": false,
+        "git.autofetch": true,
+        "magit.forge-enabled": true,
+        "emacs-mcx.enableDigitArgument": false,
+        "pomodoro.breakTime": 10,
+        "pomodoro.workTime": 50,
+        "background.style": {
+
+          "content": "''",
+          "pointer-events": "none",
+          "position": "absolute",
+          "z-index": "99999",
+          "width": "100%",
+          "height": "100%",
+          "background-position": "100% 100%",
+          "background-repeat": "no-repeat",
+          "opacity": 1
+        },
+        "genieai.enableConversationHistory": true,
+        "genieai.openai.temperature": 0.5,
+        "pomodoro.soundIntervalNotification": 20,
+        "pomodoro.workColorTime": "white",
+        "pomodoro.workColorButton": "white",
+        "dev.containers.dockerPath": "/usr/bin/podman",
+        "dev.containers.executeInWSLDistro": "Ubuntu-22.04",
+        "terminal.integrated.gpuAcceleration": "on",
+        "githubPullRequests.createOnPublishBranch": "never",
+        "workbench.colorTheme": "Default Light+ Experimental",
+        "dev.containers.defaultFeatures": {},
+        "emacs-mcx.useMetaPrefixCtrlLeftBracket": true,
+        "editor.multiCursorModifier": "ctrlCmd",
+        "[cpp]": {
+          "editor.defaultFormatter": "xaver.clang-format"
+        },
+        "terminal.explorerKind": "external",
+        "workbench.sideBar.location": "right",
+        "window.menuBarVisibility": "toggle",
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "terminal.external.linuxExec": "kgx",
+        "terminal.integrated.profiles.linux": {
+          "bash": {
+            "path": "bash",
+            "icon": "terminal-bash"
+          },
+          "zsh": {
+            "path": "zsh"
+          },
+          "fish": {
+            "path": "fish"
+          },
+          "tmux": {
+            "path": "tmux",
+            "icon": "terminal-tmux"
+          },
+          "pwsh": {
+            "path": "pwsh",
+            "icon": "terminal-powershell"
+          }
+        },
+        "editor.cursorBlinking": "phase",
+        "editor.cursorSmoothCaretAnimation": "on",
+        "workbench.panel.defaultLocation": "left",
+        "notebook.cellToolbarLocation": {
+          "default": "right",
+          "jupyter-notebook": "left"
+        },
+        "breadcrumbs.enabled": false,
+        "C_Cpp.default.cppStandard": "c++17",
+        "C_Cpp.inlayHints.autoDeclarationTypes.enabled": true,
+        "C_Cpp.intelliSenseEngine": "disabled"
+}

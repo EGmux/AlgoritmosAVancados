@@ -1,0 +1,27 @@
+{
+    "id": "M4fYoLC4qh67dSiZ4ij8AfW8rQriEdI1",
+    "createdTime": "4/26/2023, 5:20:34 PM",
+    "name": "New chat",
+    "conversations": [
+        {
+            "id": "M4fYoLC4qh67dSiZ4ij8AfW8rQriEdI1",
+            "createdTime": "4/26/2023, 5:20:34 PM",
+            "completionParams": {
+                "model": "gpt-3.5-turbo",
+                "max_tokens": 2048,
+                "temperature": 0.5,
+                "top_p": 1
+            },
+            "prompt": {
+                "id": "M4fYoLC4qh67dSiZ4ij8AfW8rQriEdI1",
+                "role": "user",
+                "text": "cpp lib for uint32t"
+            },
+            "response": {
+                "id": "YCYO5M0wFXUdHEdEdgnHkwqyWFc8eXz9",
+                "role": "assistant",
+                "text": "C++ has a built-in header file called `cstdint` which includes the definition of the `uint32_t` data type. You can simply include this header in your code and use it like this:\n\n```c++\n#include <cstdint>\n\nuint32_t myVariable = 42;\n```\n\nThis will define a variable named `myVariable` of type `uint32_t` with an initial value of `42`."
+            }
+        }
+    ]
+}

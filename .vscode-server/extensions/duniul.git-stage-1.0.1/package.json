@@ -1,0 +1,130 @@
+{
+	"name": "git-stage",
+	"displayName": "%displayName%",
+	"description": "%description%",
+	"version": "1.0.1",
+	"author": "Daniel Grefberg <hello@danielgrefberg.com>",
+	"publisher": "duniul",
+	"private": true,
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/duniul/vscode-git-stage.git"
+	},
+	"bugs": {
+		"url": "https://github.com/duniul/vscode-dircolors/issues"
+	},
+	"homepage": "https://github.com/duniul/vscode-dircolors",
+	"engines": {
+		"vscode": "^1.74.0"
+	},
+	"icon": "./resources/icons/git-stage.png",
+	"keywords": [
+		"vscode",
+		"extension",
+		"git"
+	],
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+		"onStartupFinished"
+	],
+	"main": "./dist/extension.js",
+	"scripts": {
+		"vscode:prepublish": "pnpm run build",
+		"vscode:package": "vsce package",
+		"vscode:publish": "vsce publish",
+		"build": "tsup",
+		"dev": "tsup --watch",
+		"lint": "rome check src",
+		"lint:fix": "rome check src --apply-suggested",
+		"format": "rome format src --write",
+		"changeset": "changeset",
+		"changeset:status": "changeset status",
+		"changeset:version": "changeset version"
+	},
+	"devDependencies": {
+		"@changesets/changelog-github": "^0.4.8",
+		"@changesets/cli": "^2.26.1",
+		"@types/node": "^18",
+		"@types/vscode": "^1.74.0",
+		"prettier": "^2.8.7",
+		"rome": "^11.0.0",
+		"tsup": "^6.7.0",
+		"typescript": "^5.0.2"
+	},
+	"contributes": {
+		"commands": [
+			{
+				"command": "git-stage.stageCurrentFile",
+				"title": "%command.stageCurrentFile%",
+				"category": "Git",
+				"enablement": "!operationInProgress"
+			},
+			{
+				"command": "git-stage.unstageCurrentFile",
+				"title": "%command.unstageCurrentFile%",
+				"category": "Git",
+				"enablement": "!operationInProgress"
+			},
+			{
+				"command": "git-stage.stageSelectedFiles",
+				"title": "%command.stageSelectedFiles%",
+				"category": "Git",
+				"enablement": "!operationInProgress"
+			},
+			{
+				"command": "git-stage.unstageSelectedFiles",
+				"title": "%command.unstageSelectedFiles%",
+				"category": "Git",
+				"enablement": "!operationInProgress"
+			}
+		],
+		"menus": {
+			"commandPalette": [
+				{
+					"command": "git-stage.stageCurrentFile",
+					"group": "git",
+					"when": "gitOpenRepositoryCount != 0"
+				},
+				{
+					"command": "git-stage.unstageCurrentFile",
+					"group": "git",
+					"when": "config.git.enabled && !git.missing && gitOpenRepositoryCount != 0"
+				},
+				{
+					"command": "git-stage.stageSelectedFiles",
+					"group": "git",
+					"when": "false"
+				},
+				{
+					"command": "git-stage.unstageSelectedFiles",
+					"group": "git",
+					"when": "false"
+				}
+			],
+			"explorer/context": [
+				{
+					"command": "git-stage.stageSelectedFiles",
+					"group": "git",
+					"when": "config.git.enabled && !git.missing && gitOpenRepositoryCount != 0"
+				},
+				{
+					"command": "git-stage.unstageSelectedFiles",
+					"group": "git",
+					"when": "config.git.enabled && !git.missing && gitOpenRepositoryCount != 0"
+				}
+			]
+		}
+	},
+	"__metadata": {
+		"id": "30d2b8d0-cbcd-4716-9928-4f94f97401f0",
+		"publisherId": "6b8a6530-9ec6-4205-9f40-0d1d3bd29a27",
+		"publisherDisplayName": "Daniel Grefberg",
+		"targetPlatform": "undefined",
+		"updated": false,
+		"isPreReleaseVersion": false,
+		"installedTimestamp": 1682214143073,
+		"preRelease": false
+	}
+}
