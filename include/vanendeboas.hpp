@@ -17,8 +17,8 @@ struct VEBTree{
         
         VEBTree(const uint32_t universeSize):m_summary(NULL),m_bitsize(universeSize){
             if(m_bitsize>2){
-            m_subtrees.reserve(floor(sqrt(m_bitsize))); // reserve because we'll pushback later, and this speedup things
-            m_subtrees.resize(floor(sqrt(m_bitsize)));
+            m_subtrees.reserve(ceil(sqrt(m_bitsize))); // reserve because we'll pushback later, and this speedup things
+            m_subtrees.resize(ceil(sqrt(m_bitsize)));
             }
         };
     };

@@ -18,7 +18,7 @@
     */
 VanEndeBoas::VanEndeBoas(const uint32_t universeSize, VEBTree** parentNode){
     if(universeSize > 1){
-        const uint32_t clusterGroups = floor(sqrt(universeSize));
+        const uint32_t clusterGroups = ceil(sqrt(universeSize));
         *parentNode = new VEBTree(universeSize);
         VanEndeBoas(clusterGroups, &((*parentNode)->m_summary)); // initialize the summary for each node
         if(clusterGroups == 1){return;}
@@ -62,19 +62,22 @@ int32_t VanEndeBoas::Succ(VEBTree* parentNode, const uint32_t valueToFind){
 }
 
 void VanEndeBoas::Insertion(VEBTree** parentNode, uint32_t valueToInsert, uint32_t counter){
-    /* got to a base node */
-    if(*&(*parentNode)->m_bitsize == 2){
-        *&(*parentNode)->min = *&(*parentNode)->min > valueToInsert? valueToInsert : *&(*parentNode)->min;
-        *&(*parentNode)->max = *&(*parentNode)->max > valueToInsert?  *&(*parentNode)->max: valueToInsert;
-        return;
+
+    /* repeat value */
+    if((*&(*parentNode)->min == valueToInsert) || (*&(*parentNode)->max) == valueToInsert){
+        m_depth=0;return;
     }
     /* got to empty node */
-    else if(*&(*parentNode)->min == NIL){
+     if(*&(*parentNode)->min == NIL){
         *&(*parentNode)->min = *&(*parentNode)->max = valueToInsert;
         return;
     }
-    /* found repeated value */
-    else if((valueToInsert == *&(*parentNode)->min) || (valueToInsert == *&(*parentNode)->max)){m_depth=0;return;}
+    /* got to a base node */
+    else if(*&(*parentNode)->m_bitsize == 2){
+        *&(*parentNode)->min = *&(*parentNode)->min < valueToInsert? *&(*parentNode)->min : valueToInsert;
+        *&(*parentNode)->max = *&(*parentNode)->max > valueToInsert?  *&(*parentNode)->max: valueToInsert;
+        return;
+    }
     else{
         /* value to insert becomes the new current node min, we need to propagante such min and insert somewhere else */
         if(valueToInsert < *&(*parentNode)->min){
@@ -84,11 +87,10 @@ void VanEndeBoas::Insertion(VEBTree** parentNode, uint32_t valueToInsert, uint32
         }
         *&(*parentNode)->max = *&(*parentNode)->max > valueToInsert ? *&(*parentNode)->max : valueToInsert;
         /* if one of the pointed clusters is empty we can put the value there and update the summary, note the update requires a recursive call */
-        auto [clusterNum, clusterPos] = GetClusterCoordinates(valueToInsert, *&(*parentNode));
+        auto [clusterNum, clusterPos] = GetClusterCoordinates(valueToInsert, *parentNode);
         if( *&(*parentNode)->m_subtrees[clusterNum]->min == NIL){
              Insertion(&(*parentNode)->m_summary, clusterNum, counter+1); //we don't update the depth for summary!
         }
-        if(m_depth==0)return;
         /* if the above condition is true, insertion is directly in the next cluster so o(1), else it'll be the only recursive call */
         Insertion(&(*parentNode)->m_subtrees[clusterNum], clusterPos, (counter > 0?counter+1:(++m_depth,0))); // make sure that only after updating the summary we increase counter
         return ;
@@ -111,12 +113,10 @@ void VanEndeBoas::Removal(uint32_t valueToFind, VEBTree **parentNode, uint32_t c
         /*  it must be the case that the cluster has at least one element to be the new mininmum*/
         valueToFind = *&(*parentNode)->min = computeValue(clusterNum, w, clusterPosNew);
     }
-    else if(*&(*parentNode)->min==NIL) {m_depth=0;return;} //can't find the number
     /* we now neew to update the clusters *
      did the cluster become empty after the update, we need to update the summary then */
     if(counter==0)m_depth++;
     Removal(clusterPos, &(*parentNode)->m_subtrees[clusterNum],++counter);
-    if(m_depth==0)return;   
     if(*&(*parentNode)->m_subtrees[clusterNum]->min == NIL){
         Removal(clusterNum, &(*parentNode)->m_summary,++counter);
     }
