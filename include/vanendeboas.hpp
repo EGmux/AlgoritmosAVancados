@@ -38,7 +38,7 @@ public:
     *   parentNode the VEB tree being current traversed
     *   @return None
      */    
-     uint32_t Insertion(VEBTree** parentNode , uint32_t valueToInsert, VEBTree* ancestralNode);
+     void Insertion(VEBTree** parentNode , uint32_t valueToInsert, uint32_t counter);
     
     /*
     *   @brief Given a present value in the VEB find it succesor, to
@@ -58,7 +58,7 @@ public:
     *   ancestral node is used to check if current node is summary or not
     *   @return None
     * */
-     uint32_t Removal( uint32_t valueToFind, VEBTree** parentNode, VEBTree* ancestralNode);
+     void Removal( uint32_t valueToFind, VEBTree** parentNode, uint32_t counter);
 
 
      /* 

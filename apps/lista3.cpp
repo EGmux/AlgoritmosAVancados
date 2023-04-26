@@ -37,9 +37,9 @@ int main(int argc, char* argv[]) {
     universeSize = pow(2,(pow(2,universeSize)));
     VanEndeBoas vebTree(universeSize, &root);
     
-    if(burnIn>0){vebTree.Insertion(&root, seed%universeSize,root);} // this is included in the burn-in
+    if(burnIn>0){vebTree.Insertion(&root, seed%universeSize,0);} // this is included in the burn-in
     for(uint32_t insertionNum{1}; insertionNum < burnIn; ++insertionNum){
-        vebTree.Insertion(&root, RngNext()%universeSize,root);
+        vebTree.Insertion(&root, RngNext()%universeSize,0);
     }
 
     for (uint32_t curOp {0}; curOp < numOps; ++curOp) {
@@ -47,7 +47,7 @@ int main(int argc, char* argv[]) {
         if (choiceOfOperation < freqInsertion) {
             /* OP == "INS" */
             auto valueToInsert = RngNext() % universeSize;
-            vebTree.Insertion(&root, valueToInsert,root);
+            vebTree.Insertion(&root, valueToInsert,0);
             auto depth = vebTree.returnDepth();
             if(curOp%freqPrint==0)
                 std::cout << "I" << ' ' << depth << '\n';
@@ -65,7 +65,7 @@ int main(int argc, char* argv[]) {
             auto valueToFind = RngNext() % universeSize;
             auto  succ = vebTree.Succ(root, valueToFind);
             valueToFind = succ != -1? succ : valueToFind; 
-            vebTree.Removal(valueToFind, &root,root);
+            vebTree.Removal(valueToFind, &root,0);
             auto depth = vebTree.returnDepth();
             if(curOp%freqPrint==0)
                 std::cout << "D" << ' ' << depth << '\n';
