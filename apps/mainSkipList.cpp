@@ -33,18 +33,21 @@ int main(int argc, char *argv[]){
 
         seed = S;
         auto L = new USkipList(1);
-        L->Insert(&L, seed % U, RngNext);
-        for(auto i{1}; i < B; ++i){
-            L->Insert(&L, RngNext()%U ,RngNext);
+        if(B>0){
+            L->Insert(&L, seed % U, RngNext);
+            for(auto i{1}; i < B; ++i){
+                L->Insert(&L, RngNext()%U ,RngNext);
+            }
         }
+        
         for(auto curOp{0}; curOp < N; ++curOp){
-            auto X = RngNext() % (F + I +D);
+            auto X = (seed == S?seed:RngNext()) % (F + I +D);
             if(X < F){
                 /* FND */
                 X = RngNext() % U;
                 auto [ammount, height] = L->Search(L, X);
                 if(curOp%P==0){
-                    std::cout << "F " << ammount << " " << height;
+                    std::cout << "F " << ammount << " " << height << '\n';
                 }
             }
             else if((F <= X) && (X < (F + I))){
@@ -52,7 +55,7 @@ int main(int argc, char *argv[]){
                 X = RngNext() % U;
                 auto r = L->Insert(&L, X, RngNext);
                 if(curOp%P == 0){
-                    std::cout << "I " << (r==true?1 :0);
+                    std::cout << "I " << (r==true?1 :0) << '\n';
                 }
             }
             else {
@@ -60,10 +63,9 @@ int main(int argc, char *argv[]){
                 X = RngNext() % U;
                 auto r = L->Delete(&L, X);
                 if(curOp %P == 0){
-                    std::cout << "D " << (r==true?1:0);
+                    std::cout << "D " << (r==true?1:0) << '\n';
                 }
             }
-            std::cout << '\n';
         }
     }
 }

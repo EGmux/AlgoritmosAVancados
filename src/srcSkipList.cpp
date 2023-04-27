@@ -11,13 +11,13 @@ USkipList::USkipList(int32_t nodeHeight):m_height((nodeHeight)){
 };
 
 std::pair<uint32_t, uint32_t> USkipList::Search(USkipList *L, uint32_t key) {
-    auto P = Precursors(L, key); // return the list of precursors, note that P[0] is actually the last element to be filled
+    auto P = PrecursorsUnique(L, key); // return the list of precursors, note that P[0] is actually the last element to be filled
     std::map<USkipList*, USkipList*> PMap;
     for(auto &i: P){
         PMap[i] = i; //this remove repeated pointers
     }
-    if (P[0]->m_nodes[0] != nullptr && P[0]->m_nodes[0]->m_key == key) { // start from the candidate predecessor, check if indeed it is
-        return std::pair<uint32_t, uint32_t> {PMap.size()+1, P[0]->m_nodes[0]->m_height}; 
+    if (m_precursor->m_nodes[0] != nullptr && m_precursor->m_nodes[0]->m_key == key) { // start from the candidate predecessor, check if indeed it is
+        return std::pair<uint32_t, uint32_t> {PMap.size()+1, m_precursor->m_nodes[0]->m_height}; 
     } else 
         return std::pair<uint32_t, uint32_t> {PMap.size()+1, 0}; 
 }
@@ -35,9 +35,25 @@ std::vector<USkipList*> USkipList::Precursors(USkipList *L, uint32_t key) {
     return P;
 }
 
+std::vector<USkipList*> USkipList::PrecursorsUnique(USkipList *L, uint32_t key) {
+    m_precursor=nullptr;
+    std::vector<USkipList*> P2;
+    auto cur = L; // start from the head node
+    for (int32_t l {(int32_t)L->m_height-1}; l > -1; --l) { // start from the top of the head node and repeat until you get to the end of that height or find a larger key
+        while (cur->m_nodes[l] != nullptr && cur->m_nodes[l]->m_key < key) {
+            cur = cur->m_nodes[l]; // keep going to the next node in that height
+            P2.push_back(cur);
+        }
+        m_precursor=cur;
+    }
+    
+    return P2;
+}
+
 uint32_t USkipList::RandomHeight(USkipList *L, uint32_t(*RNG)()) {
     auto l = 1;
-    while (((RNG() % 100 ) < 50) && l < MaxHeight(L)){ // passing a function pointer so we can update the state in main
+    auto maxHeight = MaxHeight(L);
+    while (((RNG() % 100 ) < 50) && l < maxHeight){ // passing a function pointer so we can update the state in main
         l = l + 1;
     }
     return l;
