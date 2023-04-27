@@ -1,11 +1,9 @@
 #include "../include/includeSkipList.hpp"
-#include <algorithm>
-#include <cmath>
 #include <cstdint>
-#include <iostream>
-#include <istream>
 #include <sstream>
 #include <string>
+#include <sys/types.h>
+#include <iostream>
 
 uint32_t seed;
 #define R UINT32_MAX
@@ -17,68 +15,53 @@ uint32_t RngNext() {
     return seed;
 }
 
-int main(int argc, char* argv[]) {
-    uint32_t sparseTableWidth {0};
-    std::string op;         // operation that can be MIN, MAX or SUM
-    uint32_t numOps {0};    // total number of operations
-    uint32_t freqRangeQuery {0};
-    uint32_t freqRangeUpdt {0};
-    std::string curLine;     // current testset in a testcase;
-    uint32_t curIter {0};    // current testcase
-    std::vector<uint32_t> zerothRow;
+int main(int argc, char *argv[]){
+    uint32_t S{0};
+    uint32_t U{0};
+    uint32_t B{0};
+    uint32_t N{0};
+    uint32_t F{0};
+    uint32_t I{0};
+    uint32_t D {0};
+    uint32_t P{0};
+    std::string curLine;
 
-    while (std::getline(std::cin, curLine), !curLine.empty()) {
+    while(std::getline(std::cin, curLine), !curLine.empty()){
         std::stringstream ss(curLine);
-        ss >> seed >> sparseTableWidth >> op >> numOps >> freqRangeQuery >>
-            freqRangeUpdt;    // parse testset
-        zerothRow.reserve(
-            sparseTableWidth);    // https://stackoverflow.com/questions/13029299/stdvectorresize-vs-stdvectorreserve
-        auto m = (sparseTableWidth << 2);
-
-        /*
-         * We use pushback here because reserve only allocates memory, but won't create the
-         * necessary indexes until needed.
-         */
-         zerothRow.push_back(seed%m); // Na primeira chamada, essa função deve retornar X[0]=S.
-        for (auto i {1}; i < sparseTableWidth; ++i) {
-            zerothRow.push_back(RngNext() % m);
-        };
-        uint32_t (*function)(const uint32_t, const uint32_t);
-        uint32_t id;
-        if (op == "MIN") {
-            function = [](const uint32_t X, const uint32_t Y) {
-                return X > Y ? Y : X;
-            };
-            id = UINT32_MAX;
-        } else if (op == "MAX") {
-            function = [](const uint32_t X, const uint32_t Y) {
-                return X > Y ? X : Y;
-            };
-            id = 0;
-        } else {
-            function = [](const uint32_t X, const uint32_t Y) {
-                return X + Y;
-            };
-            id = 0;
-        }
-        SparseTable st {zerothRow, function, id};
-        uint32_t result;
-        std::cout << "caso" << " " << curIter << '\n';
-        for (uint32_t curOp {0}; curOp < numOps; ++curOp) {
-            if (RngNext() % (freqRangeQuery + freqRangeUpdt) < freqRangeQuery) {
-                auto lower = RngNext() % sparseTableWidth;
-                auto higher = lower + 1  + (RngNext() % (sparseTableWidth - lower));
-                result = st.Query(lower, higher);
-            } else {
-                auto targetIndex = RngNext() % sparseTableWidth;
-                auto newValue = RngNext() % m;
-                st.Upd(targetIndex, newValue);
-                result = st.Query(targetIndex, sparseTableWidth);
-            }
-            std::cout << result << '\n';
-        };
-        std::cout << '\n';    // blank line, signals end of current testcase
-        curIter++;
-        zerothRow.clear();
+        ss >> S >> U >> B >> N >> F >> I >> D >> P;
     }
-};
+    seed = S;
+    auto L = new USkipList;
+    L->Insert(L, seed % U, RngNext);
+    for(auto i{1}; i < B; ++i){
+        L->Insert(L, RngNext()%U ,RngNext);
+    }
+    for(auto curOp{0}; curOp < N; ++curOp){
+        auto X = RngNext() % (F + I +D);
+        if(X < F){
+            /* FND */
+            X = RngNext() % U;
+            auto r = L->Search(L, X);
+            if(curOp%P==0){
+                std::cout << "F" << r.first << r.second;
+            }
+        }
+        else if((F <= X) && (X < (F + I))){
+            /* INS */
+            X = RngNext() % U;
+            auto r = L->Insert(L, X, RngNext);
+            if(curOp%P == 0){
+                std::cout << "I" << (r==true?1 :0);
+            }
+        }
+        else {
+            /* DEL */
+            X = RngNext() % U;
+            auto r = L->Delete(L, X);
+            if(curOp %P == 0){
+                std::cout << "D" << (r==true?1:0);
+            }
+        }
+    }
+}
+
