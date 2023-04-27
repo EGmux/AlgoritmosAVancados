@@ -4,6 +4,7 @@
 #include <string>
 #include <sys/types.h>
 #include <iostream>
+#include <iterator>
 
 uint32_t seed;
 #define R UINT32_MAX
@@ -41,9 +42,9 @@ int main(int argc, char *argv[]){
             if(X < F){
                 /* FND */
                 X = RngNext() % U;
-                auto r = L->Search(L, X);
+                auto [ammount, height] = L->Search(L, X);
                 if(curOp%P==0){
-                    std::cout << "F " << r.first << " " << r.second;
+                    std::cout << "F " << ammount << " " << height;
                 }
             }
             else if((F <= X) && (X < (F + I))){
@@ -62,6 +63,7 @@ int main(int argc, char *argv[]){
                     std::cout << "D " << (r==true?1:0);
                 }
             }
+            std::cout << '\n';
         }
     }
 }
