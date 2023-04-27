@@ -3,12 +3,14 @@
 #include <cstdlib>
 #include <utility>
 
+USkipList::USkipList()= default;
+
 std::pair<uint32_t, uint32_t> USkipList::Search(USkipList *L, uint32_t key) {
     auto P = Precursors(L, key); // return the list of precursors, note that P[0] is actually the last element to be filled
     if (P[0]->m_nodes[0] != nullptr && P[0]->m_nodes[0]->m_key == key) { // start from the candidate predecessor, check if indeed it is
         return std::pair<uint32_t, uint32_t> {P.size(), P[0]->m_height}; 
     } else 
-        return std::pair<uint32_t, uint32_t> {0, 0};
+        return std::pair<uint32_t, uint32_t> {P.size(), 0};
 }
 
 std::vector<USkipList *> USkipList::Precursors(USkipList *L, uint32_t key) {
@@ -53,15 +55,14 @@ bool USkipList::Delete(USkipList *L, uint32_t key) {
     return true;
 }
 
-bool USkipList::Insert(USkipList *L, uint32_t key, uint32_t val, uint32_t(*RNG)()) {
+bool USkipList::Insert(USkipList *L, uint32_t key,  uint32_t(*RNG)()) {
     auto P = Precursors(L, key);
     // value already in the skiplist
     if (P[0]->m_nodes[0] != nullptr && P[0]->m_nodes[0]->m_key == key) {
-        P[0]->m_nodes[0]->m_val = val;
         return false;
     }
     // value is not in the skip list, do we increase the height of the precursors?
-    auto h = RandomHeight(L);
+    auto h = RandomHeight(L,RNG);
     if (h > L->m_height) {
         L[0].m_nodes.resize(h);
         for (auto i {0}; i < h; ++i) {
@@ -77,7 +78,6 @@ bool USkipList::Insert(USkipList *L, uint32_t key, uint32_t val, uint32_t(*RNG)(
         N[i].m_nodes.push_back(nullptr);
     }
     N->m_key = key;
-    N->m_val = val;
     // now we insert it in the skiplist start from the bottom until the maximum height, that is
     // insert in each "height" of the skippedlist
     for (auto l {0}; l < h; ++l) {
