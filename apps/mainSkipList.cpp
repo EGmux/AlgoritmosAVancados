@@ -32,9 +32,9 @@ int main(int argc, char *argv[]){
 
         seed = S;
         auto L = new USkipList;
-        L->Insert(L, seed % U, RngNext);
+        L->Insert(&L, seed % U, RngNext);
         for(auto i{1}; i < B; ++i){
-            L->Insert(L, RngNext()%U ,RngNext);
+            L->Insert(&L, RngNext()%U ,RngNext);
         }
         for(auto curOp{0}; curOp < N; ++curOp){
             auto X = RngNext() % (F + I +D);
@@ -49,7 +49,7 @@ int main(int argc, char *argv[]){
             else if((F <= X) && (X < (F + I))){
                 /* INS */
                 X = RngNext() % U;
-                auto r = L->Insert(L, X, RngNext);
+                auto r = L->Insert(&L, X, RngNext);
                 if(curOp%P == 0){
                     std::cout << "I " << (r==true?1 :0);
                 }
@@ -57,7 +57,7 @@ int main(int argc, char *argv[]){
             else {
                 /* DEL */
                 X = RngNext() % U;
-                auto r = L->Delete(L, X);
+                auto r = L->Delete(&L, X);
                 if(curOp %P == 0){
                     std::cout << "D " << (r==true?1:0);
                 }

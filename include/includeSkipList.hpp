@@ -12,10 +12,10 @@ struct USkipList{
 
     std::pair<uint32_t,uint32_t> Search(USkipList* L, uint32_t key);
     std::vector<USkipList*> Precursors(USkipList* L, uint32_t key);
-    bool Insert(USkipList* L, uint32_t key, uint32_t(*)());
+    bool Insert(USkipList** L, uint32_t key, uint32_t(*)());
     uint32_t RandomHeight(USkipList* L, uint32_t(*RNG)());
     uint32_t MaxHeight(USkipList* L);
-    bool Delete(USkipList* L, uint32_t key);
+    bool Delete(USkipList** L, uint32_t key);
     USkipList();
 };
 
