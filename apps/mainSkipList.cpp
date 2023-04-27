@@ -31,7 +31,7 @@ int main(int argc, char *argv[]){
         ss >> S >> U >> B >> N >> F >> I >> D >> P;
 
         seed = S;
-        auto L = new USkipList;
+        auto L = new USkipList(1);
         L->Insert(&L, seed % U, RngNext);
         for(auto i{1}; i < B; ++i){
             L->Insert(&L, RngNext()%U ,RngNext);
