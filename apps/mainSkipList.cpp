@@ -29,37 +29,38 @@ int main(int argc, char *argv[]){
     while(std::getline(std::cin, curLine), !curLine.empty()){
         std::stringstream ss(curLine);
         ss >> S >> U >> B >> N >> F >> I >> D >> P;
-    }
-    seed = S;
-    auto L = new USkipList;
-    L->Insert(L, seed % U, RngNext);
-    for(auto i{1}; i < B; ++i){
-        L->Insert(L, RngNext()%U ,RngNext);
-    }
-    for(auto curOp{0}; curOp < N; ++curOp){
-        auto X = RngNext() % (F + I +D);
-        if(X < F){
-            /* FND */
-            X = RngNext() % U;
-            auto r = L->Search(L, X);
-            if(curOp%P==0){
-                std::cout << "F" << r.first << r.second;
-            }
+
+        seed = S;
+        auto L = new USkipList;
+        L->Insert(L, seed % U, RngNext);
+        for(auto i{1}; i < B; ++i){
+            L->Insert(L, RngNext()%U ,RngNext);
         }
-        else if((F <= X) && (X < (F + I))){
-            /* INS */
-            X = RngNext() % U;
-            auto r = L->Insert(L, X, RngNext);
-            if(curOp%P == 0){
-                std::cout << "I" << (r==true?1 :0);
+        for(auto curOp{0}; curOp < N; ++curOp){
+            auto X = RngNext() % (F + I +D);
+            if(X < F){
+                /* FND */
+                X = RngNext() % U;
+                auto r = L->Search(L, X);
+                if(curOp%P==0){
+                    std::cout << "F " << r.first << " " << r.second;
+                }
             }
-        }
-        else {
-            /* DEL */
-            X = RngNext() % U;
-            auto r = L->Delete(L, X);
-            if(curOp %P == 0){
-                std::cout << "D" << (r==true?1:0);
+            else if((F <= X) && (X < (F + I))){
+                /* INS */
+                X = RngNext() % U;
+                auto r = L->Insert(L, X, RngNext);
+                if(curOp%P == 0){
+                    std::cout << "I " << (r==true?1 :0);
+                }
+            }
+            else {
+                /* DEL */
+                X = RngNext() % U;
+                auto r = L->Delete(L, X);
+                if(curOp %P == 0){
+                    std::cout << "D " << (r==true?1:0);
+                }
             }
         }
     }
