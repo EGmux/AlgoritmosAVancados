@@ -21,17 +21,18 @@ struct PerfectHashTable{
     FirstLvTable* m_tableEntry; // pointer, size of linked list, note that will be deleted after perfect hashing
     PerefctTable* m_newTable;
     SecondLvTable* m_tables; // level2 table
+    std::vector<uint32_t>* m_sizes;
 
 //methods
     //BasicHashing
-    void Set(uint32_t k);
+    std::pair<int32_t,int32_t> Set(uint32_t k);
     const bool Get(uint32_t k);
     void Rehash();
     void GenHash1();
 
     //PerfectHashing
     uint32_t PerfectHashingSearch(PerfectHashTable* t, MHT h, std::vector<MGHt> g, uint32_t k);
-    void BuildPerfectHashing(std::vector<uint32_t> keys);
+    void BuildPerfectHashing();
 
     // fields
     MHT m_mH; // first one use this
@@ -44,9 +45,6 @@ struct PerfectHashTable{
 
     //constructors
     explicit PerfectHashTable( uint32_t u, uint32_t m0, uint32_t p, RNG rng);
-    PerfectHashTable(PerfectHashTable&& T){
-        
-    }
 };
 
 

@@ -10,6 +10,7 @@ uint32_t seed;
 #define R UINT32_MAX
 #define A 1664525
 #define C 1013904223
+#define P (2<<30 - 1)
 
 uint32_t RngNext() {
     seed = (A * seed + C) % R;
@@ -31,16 +32,17 @@ int main(int argc, char *argv[]){
         ss >> S >> U >> M0 >> I >> Q >> Pi >> Pq;
 
         seed = S;
-        // auto T = new perfectHashTable(M0);
+        auto T = PerfectHashTable(U, M0, P, RngNext);
         
         for(auto curInsertion{0}; curInsertion < I; ++curInsertion){
-            auto X = (seed == S?seed:RngNext()) % (U);
-            /* do some insertions */
+            auto K = (seed == S?seed:RngNext()) % (U);
+            auto [i, j] = T.Set(K);
             if(curInsertion % Pi==0){
-                // std::cout << I << K << i << j << '\n';
+                std::cout << I << K << i << j << '\n';
                 // same as below but strictly for T0 only   
             }
         }
+        // T.BuildPerfectHashing();
         for(auto curQuery{0}; curQuery < Q; ++curQuery){
             /* do some querying 🖥️ */
             if(curQuery % Pq == 0){
