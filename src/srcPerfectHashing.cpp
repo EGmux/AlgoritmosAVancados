@@ -38,11 +38,10 @@ void PerfectHashTable::Rehash(){
                 (*tmpT)[newi].insert_after((*tmpT)[newi].begin(),j);
             }
         }
-        m_tableEntry->clear();
-        m_tableEntry->resize(m_m0);
+        m_tableEntry->reserve(m_m0); //so we don't waste our previous capacity
         for(auto i{0}; i < m_m0;++i){
-            (*m_tableEntry)[i].clear();
-            (*m_tableEntry)[i] = std::move((*tmpT)[i]);
+            (*m_tableEntry)[i].resize(1); //can't use clear here, going to segfault
+            (*m_tableEntry)[i]= std::move((*tmpT)[i]); 
         }
         delete tmpT;
     }
