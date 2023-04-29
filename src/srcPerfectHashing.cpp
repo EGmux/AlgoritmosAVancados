@@ -7,11 +7,11 @@
 #include <sys/types.h>
 #include <utility>
 
-PerfectHashTable::PerfectHashTable(uint32_t u, uint32_t m0, uint32_t p, RNG rng, uint32_t seed):m_rng(rng),m_u(u),m_m0(m0),m_p(p),m_seed(seed),m_isSeed(true){
-    auto mNewTableTmp = new FirstLvTable[m0];
+PerfectHashTable::PerfectHashTable(uint32_t u, uint32_t m0, uint32_t p, RNG rng, uint32_t seed):m_rng(rng),m_u(u),m_m0(m0),m_p(p),m_seed(seed),m_isSeed(true),m_numKeys(0){
+    auto mNewTableTmp = new FirstLvTable;
+    mNewTableTmp->resize(m_m0);
     m_tableEntry = mNewTableTmp;
     GenHash1();
-    delete[] mNewTableTmp;
 };
 
 void PerfectHashTable::GenHash1(){
@@ -28,14 +28,20 @@ void PerfectHashTable::GenHash1(){
 };
 
 void PerfectHashTable::Rehash(){
-    auto isRehash = 2*m_numKeys>(*m_newTable).size() ?true:false;
+    auto isRehash = 2*m_numKeys>m_tableEntry->capacity() ?true:false;
     if(isRehash){
         m_m0 = (m_m0 << 2) + 1; // increase the size
-        auto tmpT=new FirstLvTable[m_m0];  //need to allocate in the heap
+        auto tmpT=new FirstLvTable;  //need to allocate in the heap
+        tmpT->resize(m_m0);
         GenHash1(); // P=2^31 -1, mutates m_mH
         for(auto &i: *m_tableEntry){ // acces the indexes of the hashtable
             for(auto &j : *i){ // access the entries in the linked list
                 auto newi = m_mH(j);
+                if(tmpT[newi].empty()){ //guarantee no segfault
+                    auto fwdTmp = new std::list<uint32_t>;
+                    (*tmpT)[newi] = fwdTmp;
+                }
+                (*tmpT)[j]->push_back(j);
             }
         }
         m_tableEntry->reserve(m_m0); //so we don't waste our previous capacity
@@ -57,12 +63,12 @@ const bool PerfectHashTable::Get(uint32_t k){
 std::pair<int32_t,int32_t> PerfectHashTable::Set(uint32_t k){
     Rehash(); // Check if table has too many elements
     auto i = (int32_t)m_mH(k);
-    auto j = (*m_tableEntry)[i]->size();
+    auto j = m_tableEntry[i].size();
     if(j==0){
         auto tmpFL = new std::list<uint32_t>;
         (*m_tableEntry)[i] = tmpFL;
     }
-    if(!Get(k)){(*m_tableEntry)[i]->push_back(k);} // count only before the insertion!
+    if(!Get(k)){(*m_tableEntry)[i]->push_back(k),m_numKeys++;} // count only before the insertion!
     else{
         j =i = -1;
     }
