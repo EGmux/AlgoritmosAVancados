@@ -17,9 +17,9 @@ project ("AlgoritmosAVancados")
 add_subdirectory ("AlgoritmosAVancados")
 
 # Include headers
-add_library(SkipListlib STATIC "include/includeSkipList.hpp" "src/srcSkipList.cpp")
-target_include_directories(SkipListlib PUBLIC "include")
-target_compile_features(SkipListlib PUBLIC cxx_std_17)
+add_library(PerfectHashinglib STATIC "include/includePerfectHashing.hpp" "src/srcPerfectHashing.cpp")
+target_include_directories(PerfectHashinglib PUBLIC "include")
+target_compile_features(PerfectHashinglib PUBLIC cxx_std_17)
 
 IF(ENABLE_TESTS)
 	enable_testing()
@@ -33,14 +33,14 @@ FetchContent_Declare(
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
-add_executable(SkipListTests "tests/testsSkipList.cpp")
-target_link_libraries(SkipListTests PRIVATE GTest::gtest_main)
+add_executable(PerfectHashingTests "tests/testsPerfectHashing.cpp")
+target_link_libraries(PerfectHashingTests PRIVATE GTest::gtest_main)
 include(GoogleTest)
-gtest_discover_tests(SkipListTests)
+gtest_discover_tests(PerfectHashingTests)
 endif()
 
 ## Main application
-add_executable(main "apps/mainSkipList.cpp")
-target_link_libraries(main PUBLIC SkipListlib)
+add_executable(main "apps/mainPerfectHashing.cpp")
+target_link_libraries(main PUBLIC PerfectHashinglib)
 
 
