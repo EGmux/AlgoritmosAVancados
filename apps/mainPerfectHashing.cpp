@@ -32,7 +32,7 @@ int main(int argc, char *argv[]){
         ss >> S >> U >> M0 >> I >> Q >> Pi >> Pq;
 
         seed = S;
-        auto T = PerfectHashTable(U, M0, P, RngNext);
+        auto T = PerfectHashTable(U, M0, P, RngNext,S);
         
         for(auto curInsertion{0}; curInsertion < I; ++curInsertion){
             auto K = (seed == S?seed:RngNext()) % (U);

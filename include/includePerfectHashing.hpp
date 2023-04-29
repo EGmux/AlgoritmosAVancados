@@ -2,13 +2,13 @@
 #define PERFECT_HASH_TABLE_H
 #include <cstdint>
 #include <vector>
-#include <forward_list>
+#include <list>
 
 typedef std::vector<std::vector<uint32_t>> SecondLvTable;
         
 typedef std::vector<std::vector<std::vector<uint32_t>>*> PerefctTable; // new level 1 table aftec the perfect hashing
 
-typedef std::vector<std::forward_list<uint32_t>> FirstLvTable;
+typedef std::vector<std::list<uint32_t>*> FirstLvTable;
 
 typedef uint32_t (*MHT)(uint32_t k);
 
@@ -21,7 +21,6 @@ struct PerfectHashTable{
     FirstLvTable* m_tableEntry; // pointer, size of linked list, note that will be deleted after perfect hashing
     PerefctTable* m_newTable;
     SecondLvTable* m_tables; // level2 table
-    std::vector<uint32_t>* m_sizes;
 
 //methods
     //BasicHashing
@@ -42,9 +41,11 @@ struct PerfectHashTable{
     uint32_t m_m0;
     uint32_t m_p;
     uint32_t m_numKeys;
+    uint32_t m_seed;
+    bool m_isSeed;
 
     //constructors
-    explicit PerfectHashTable( uint32_t u, uint32_t m0, uint32_t p, RNG rng);
+    explicit PerfectHashTable( uint32_t u, uint32_t m0, uint32_t p, RNG rng,uint32_t seed);
 };
 
 
