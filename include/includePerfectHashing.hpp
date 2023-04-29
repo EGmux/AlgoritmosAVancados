@@ -2,12 +2,13 @@
 #define PERFECT_HASH_TABLE_H
 #include <cstdint>
 #include <vector>
+#include <forward_list>
 
 typedef std::vector<std::vector<uint32_t>> SecondLvTable;
         
 typedef std::vector<std::vector<std::vector<uint32_t>>*> PerefctTable; // new level 1 table aftec the perfect hashing
 
-typedef std::vector<std::pair<uint32_t*, uint32_t>> FirstLvTable;
+typedef std::vector<std::forward_list<uint32_t>> FirstLvTable;
 
 typedef uint32_t (*MHT)(uint32_t k);
 
@@ -21,19 +22,31 @@ struct PerfectHashTable{
     PerefctTable* m_newTable;
     SecondLvTable* m_tables; // level2 table
 
+//methods
     //BasicHashing
     void Set(uint32_t k);
+    const bool Get(uint32_t k);
     void Rehash();
-    MHT GenHash1(uint32_t u, uint32_t m0, uint32_t p, RNG rng);
+    void GenHash1();
 
     //PerfectHashing
     uint32_t PerfectHashingSearch(PerfectHashTable* t, MHT h, std::vector<MGHt> g, uint32_t k);
     void BuildPerfectHashing(std::vector<uint32_t> keys);
 
+    // fields
     MHT m_mH; // first one use this
-    MGHt m_gH;// second one use this
+    std::vector<MGHt> m_gH;// second one use this
     RNG m_rng;
+    uint32_t m_u;
+    uint32_t m_m0;
+    uint32_t m_p;
+    uint32_t m_numKeys;
+
+    //constructors
     explicit PerfectHashTable( uint32_t u, uint32_t m0, uint32_t p, RNG rng);
+    PerfectHashTable(PerfectHashTable&& T){
+        
+    }
 };
 
 
