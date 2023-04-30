@@ -18,14 +18,14 @@ typedef uint32_t (*RNG)();
 
 struct PerfectHashTable{
     /* We need the multiple tables, an vector of linked lists and a function pointer */
-    FirstLvTable* m_tableEntry; // pointer, size of linked list, note that will be deleted after perfect hashing
-    PerefctTable* m_newTable;
-    SecondLvTable* m_tables; // level2 table
+    FirstLvTable m_tableEntry; // pointer, size of linked list, note that will be deleted after perfect hashing
+    PerefctTable m_newTable;
+    SecondLvTable m_tables; // level2 table
 
 //methods
     //BasicHashing
     std::pair<int32_t,int32_t> Set(uint32_t k);
-    const bool Get(uint32_t k);
+    std::pair<bool,uint32_t> Get(uint32_t k);
     void Rehash();
     void GenHash1();
 

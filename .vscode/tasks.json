@@ -9,7 +9,7 @@
           "record",
           "${workspaceRoot}/out/build/linux-debug/main",
           "<",
-          "${workspaceRoot}/testcases/perfecthashing/1.in"
+          "${workspaceRoot}/testcases/perfecthashing/2.in"
         ],
         "problemMatcher": []
       },
