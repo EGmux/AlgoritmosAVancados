@@ -10,6 +10,7 @@
 PerfectHashTable::PerfectHashTable(uint32_t u, uint32_t m0, uint32_t p, RNG rng, uint32_t seed):m_rng(rng),m_u(u),m_m0(m0),m_p(p),m_seed(seed),m_isSeed(true),m_numKeys(0){
     auto mNewTableTmp = new FirstLvTable;
     mNewTableTmp->resize(m_m0);
+    m_tableEntry->reserve(m_m0);
     m_tableEntry = mNewTableTmp;
     GenHash1();
 };
@@ -72,5 +73,5 @@ std::pair<int32_t,int32_t> PerfectHashTable::Set(uint32_t k){
     else{
         j =i = -1;
     }
-    return std::pair<int32_t,int32_t>(i,j);
+    return {i,j};
 }

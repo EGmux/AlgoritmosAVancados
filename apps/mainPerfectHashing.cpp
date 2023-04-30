@@ -38,7 +38,7 @@ int main(int argc, char *argv[]){
             auto K = RngNext() % (U);
             auto [i, j] = T.Set(K);
             if(curInsertion % Pi==0){
-                std::cout << I << K << i << j << '\n';
+                std::cout << 'I' << ' ' << K << ' ' << i << ' ' << j << '\n';
                 // same as below but strictly for T0 only   
             }
         }
