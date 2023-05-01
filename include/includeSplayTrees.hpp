@@ -1,20 +1,29 @@
-#ifndef SKIP_LIST_H
-#define SKIP_LIST_H
-
-#include <forward_list> // single linked list
+#ifndef SPLAY_TREES_H
+#define SPLAY_TREES_H
 #include <cstdint>
-#include <vector>
 
-typedef std::pair<std::forward_list<uint32_t>*,std::vector<std::forward_list<uint32_t>*>> USkiplist;
-
-struct SkipList{
-    bool Insertion( uint32_t valueToInsert);
-    bool Removal( uint32_t valueToRemove);
-    std::pair<uint32_t, uint32_t> Find( uint32_t valueToFind);
-    SkipList();
-    USkiplist* m_sentinel{nullptr};
+struct node{
+    node* left;
+    node* right;
+    uint32_t key;
+    node* papa;
 };
+struct SplayTree{
+    //Public methods
+    SplayTree();
+    uint32_t insert(uint32_t k);
+    uint32_t query(uint32_t k);
+
+    // Base methods
+    node* m_rotateL(node* x);
+    node* m_rotateR(node* x);
+
+    // Operational methods
+    node* m_zig(node* x);
+    node* m_zigzag(node *x);
+    node* splay(node* x);
+
+}
 
 
-
-#endif //SKIP_LIST_H
+#endif //SPLAY_TREES_H
