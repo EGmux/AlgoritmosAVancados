@@ -4,9 +4,8 @@
 #include <vector>
 #include <list>
 
-typedef std::vector<std::vector<uint32_t>> SecondLvTable;
         
-typedef std::vector<std::vector<std::vector<uint32_t>>*> PerefctTable; // new level 1 table aftec the perfect hashing
+typedef std::vector<std::vector<uint32_t>*> SecondLvTable; // new level 1 table aftec the perfect hashing
 
 typedef std::vector<std::list<uint32_t>*> FirstLvTable;
 
@@ -16,11 +15,12 @@ typedef uint32_t(*MGht)(uint32_t,uint32_t);
 
 typedef uint32_t (*RNG)();
 
+typedef std::pair<std::vector<std::pair<uint32_t,uint32_t>>,std::vector<uint32_t>> miniTables;
+
 struct PerfectHashTable{
     /* We need the multiple tables, an vector of linked lists and a function pointer */
     FirstLvTable m_tableEntry; // pointer, size of linked list, note that will be deleted after perfect hashing
-    PerefctTable m_newTable;
-    SecondLvTable m_tables; // level2 table
+    SecondLvTable m_newTable;
 
 //methods
     //BasicHashing
@@ -28,17 +28,18 @@ struct PerfectHashTable{
     std::pair<bool,uint32_t> Get(uint32_t k);
     void Rehash();
     uint32_t h1(uint32_t k,bool flag);
+    uint32_t h2(uint32_t k, uint32_t mi, bool flag);
 
     //PerfectHashing
-    uint32_t PerfectHashingSearch(PerfectHashTable* t, Mht h, std::vector<MGht> g, uint32_t k);
+    std::pair<int32_t,int32_t> PerfectHashingSearch(uint32_t k);
     void BuildPerfectHashing();
 
     // fields
-    Mht m_mH; // first one use this
     std::vector<MGht> m_gH;// second one use this
     RNG m_rng;
     uint32_t m_u;
     uint32_t m_m0;
+    miniTables m_pt;
     uint32_t m_p;
     uint32_t m_numKeys;
     uint32_t m_seed;

@@ -42,11 +42,12 @@ int main(int argc, char *argv[]){
                 // same as below but strictly for T0 only   
             }
         }
-        // T.BuildPerfectHashing();
+        T.BuildPerfectHashing();
         for(auto curQuery{0}; curQuery < Q; ++curQuery){
-            /* do some querying 🖥️ */
+            auto K = RngNext()%U;
+            auto [i,j] = T.PerfectHashingSearch(K);
             if(curQuery % Pq == 0){
-                // std::cout << Q << K << i << j << '\n';
+                 std::cout << Q << ' ' << K << ' ' << i << ' ' << j << '\n';
                 // K := key val, i := position in T0 that become T1, j := position in the linked list T0 that become T1 
             }
         }
