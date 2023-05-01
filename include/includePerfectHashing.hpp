@@ -35,7 +35,6 @@ struct PerfectHashTable{
     void BuildPerfectHashing();
 
     // fields
-    std::vector<MGht> m_gH;// second one use this
     RNG m_rng;
     uint32_t m_u;
     uint32_t m_m0;

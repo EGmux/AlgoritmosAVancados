@@ -1,4 +1,5 @@
 #include "../include/includePerfectHashing.hpp"
+#include <algorithm>
 #include <cmath>
 #include <cstdint>
 #include <iostream>
@@ -8,7 +9,6 @@
 #include <numeric>
 #include <sys/types.h>
 #include <utility>
-#include <algorithm>
 
 uint32_t PerfectHashTable::h1(uint32_t k, bool isModify = false) {
     if (isModify) {
@@ -104,15 +104,13 @@ std::pair<int32_t, int32_t> PerfectHashTable::Set(uint32_t k) {
 
 void PerfectHashTable::BuildPerfectHashing() {
     auto T = new FirstLvTable;
-    auto size = m_tableEntry.size();
+    auto size = m_numKeys;
     std::vector<uint32_t> sum;    // presumably everthing is 0
-    sum.resize(size);
-    size = size % 2 == 0 ? size+1 : size;
-    m_m0 = size;
     do {
-        T->assign(size,nullptr);                    // reset table
-        sum.assign(sum.size(), 0);    // reset sum
-        h1(0, true);                       // reset h1
+        size = (size % 2) == 0 ? 2 * floor(size >> 1) + 1 : size;
+        sum.resize(size), sum.assign(sum.size(), 0);    // reset sum
+        T->resize(size), T->assign(size, nullptr);      // reset table
+        m_m0 = size, h1(0, true);                       // reset h1
         for (auto &i : m_tableEntry) {
             if (i != nullptr) {
                 for (auto &j : *i) {
@@ -126,37 +124,46 @@ void PerfectHashTable::BuildPerfectHashing() {
                 }
             }
         }
-        std::transform(sum.begin(),sum.end(),sum.begin(),[](uint32_t s){return s*s;});
-    } while (std::accumulate(sum.cbegin(), sum.cend(), 0) >= (4 * size));    // build the table
-    auto sizeT = T->size();
-    m_newTable.resize(T->size());
-    m_pt.second.resize(T->size());
-    m_pt.first.resize(T->size());
+        std::transform(sum.begin(), sum.end(), sum.begin(), [](uint32_t s) {
+            return s * s;
+        });
+    } while (std::accumulate(sum.cbegin(), sum.cend(), 0) >
+             (m_tableEntry.capacity() << 2));    // build the table
+    auto sizeT = T->capacity();
+    m_newTable.resize(sizeT);
+    m_pt.second.resize(sizeT);
+    m_pt.second.assign(sizeT, -1);
+    m_pt.first.resize(sizeT);
     for (auto i {0}; i < sizeT; ++i) {
         if ((*T)[i] != nullptr) {
-            m_pt.second[i] = (*T)[i]->size() * (*T)[i]->size();
+            auto m = (*T)[i]->size();
+            m_pt.second[i] = m * m + 1;
             auto table = new std::vector<int32_t>;
-            again:
-            h2(0,i,true);
-            table->assign(m_pt.second[i],-1);
-            auto listT = (*T)[i];
-            for(auto &j : *listT){
-                    auto newi = h2(j,i); //j->fronOutro erro, no critério dt() will bugout
-                    if((*table)[newi] != (-1)){
+            table->resize(m_pt.second[i]);
+again:
+            h2(0, i, true);
+            table->assign(m_pt.second[i], -1);
+            auto listT = *((*T)[i]);
+            for (auto &j : listT) {
+                auto newi = h2(j, i);
+                if ((*table)[newi] != (-1)) {
                     goto again;
                 }
+                (*table)[newi] = j;
             }
             m_newTable[i] = table;
         }
     }
+    m_tableEntry.clear();
 }
 
-std::pair<int32_t,int32_t> PerfectHashTable::PerfectHashingSearch(uint32_t k){
+std::pair<int32_t, int32_t> PerfectHashTable::PerfectHashingSearch(uint32_t k) {
     auto index = h1(k);
-    auto pos = h2(k,index);
-    if(m_newTable[index]!=nullptr && (*m_newTable[index])[pos]==k){
-        return {index,pos};
-    }else{
-        return {-1,-1};
+    if (m_newTable[index] != nullptr) {
+        auto pos = h2(k, index);
+        if ((*m_newTable[index])[pos] == k) {
+            return {index, pos};
+        }
     }
+    return {-1, -1};
 }
