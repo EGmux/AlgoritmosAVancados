@@ -17,7 +17,7 @@ project ("AlgoritmosAVancados")
 add_subdirectory ("AlgoritmosAVancados")
 
 # Include headers
-add_library(minqueuelib STATIC "include/minqueue.hpp" "src/minqueue.cpp")
+add_library(minqueuelib STATIC "include/includeMinqueue.hpp" "src/srcMinqueue.cpp")
 target_include_directories(minqueuelib PUBLIC "include")
 target_compile_features(minqueuelib PUBLIC cxx_std_17)
 
@@ -39,7 +39,7 @@ include(GoogleTest)
 gtest_discover_tests(lista1Tests)
 endif()
 
-add_executable(main "apps/lista1.cpp")
+add_executable(main "apps/mainMinqueue.cpp")
 target_link_libraries(main PUBLIC minqueuelib)
 
 
