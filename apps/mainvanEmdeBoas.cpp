@@ -46,9 +46,9 @@ int main(int argc, char *argv[]){
             if(X < I){
                 /* INS */
                 X = RngNext() % U;
-                auto [I,L ] = veb.insert(X);
+                auto L = veb.insert(X);
                 if(curOp%P==0){
-                    std::cout << "F " << I << " " << L << '\n';
+                    std::cout << "I " << L << '\n';
                 }
             }
             else if((X < (F + I))){
@@ -63,7 +63,7 @@ int main(int argc, char *argv[]){
                 /* DEL */
                 X = RngNext() % U;
                 auto X_ = veb.suc(X);
-                auto L = veb.delete(X_!=U?X_:X);
+                auto L = veb.remove(X_!=U?X_:X);
                 if(curOp %P == 0){
                     std::cout << "D " << L << '\n';
                 }

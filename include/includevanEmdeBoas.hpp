@@ -1,20 +1,20 @@
 #ifndef SKIP_LIST_H
 #define SKIP_LIST_H
 
-#include <forward_list> // single linked list
 #include <cstdint>
 #include <vector>
 
-typedef std::pair<std::forward_list<uint32_t>*,std::vector<std::forward_list<uint32_t>*>> USkiplist;
 
-struct SkipList{
-    bool Insertion( uint32_t valueToInsert);
-    bool Removal( uint32_t valueToRemove);
-    std::pair<uint32_t, uint32_t> Find( uint32_t valueToFind);
-    SkipList();
-    USkiplist* m_sentinel{nullptr};
+struct vanEmdeBoas{
+    uint32_t high(uint32_t x);
+    uint32_t low(uint32_t x);
+    uint32_t index(uint32_t h, uint32_t l);
+
+    uint32_t succ(uint32_t x);
+    uint32_t insert(uint32_t x);
+    uint32_t remove(uint32_t x);
+
 };
-
 
 
 #endif //SKIP_LIST_H
