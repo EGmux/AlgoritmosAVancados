@@ -3,16 +3,16 @@
 #include <cstdint>
 
 struct node{
-    node* left;
-    node* right;
+    node* left{nullptr};
+    node* right{nullptr};
     uint32_t key;
-    node* papa;
+    node* par{nullptr}; //parent
 };
 struct SplayTree{
     //Public methods
     SplayTree();
-    uint32_t insert(uint32_t k);
-    uint32_t query(uint32_t k);
+    int32_t insert(uint32_t k);
+    int32_t query(uint32_t k);
 
     // Base methods
     node* m_rotateL(node* x);
@@ -23,6 +23,8 @@ struct SplayTree{
     node* m_zigzag(node *x);
     node* splay(node* x);
 
+    //fields
+    node* root;
 }
 
 
