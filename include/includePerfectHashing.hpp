@@ -5,7 +5,7 @@
 #include <list>
 
         
-typedef std::vector<std::vector<uint32_t>*> SecondLvTable; // new level 1 table aftec the perfect hashing
+typedef std::vector<std::vector<int32_t>*> SecondLvTable; // new level 1 table aftec the perfect hashing
 
 typedef std::vector<std::list<uint32_t>*> FirstLvTable;
 

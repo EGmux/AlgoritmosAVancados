@@ -8,6 +8,7 @@
 #include <numeric>
 #include <sys/types.h>
 #include <utility>
+#include <algorithm>
 
 uint32_t PerfectHashTable::h1(uint32_t k, bool isModify = false) {
     if (isModify) {
@@ -104,12 +105,14 @@ std::pair<int32_t, int32_t> PerfectHashTable::Set(uint32_t k) {
 void PerfectHashTable::BuildPerfectHashing() {
     auto T = new FirstLvTable;
     auto size = m_tableEntry.size();
-    std::vector<uint32_t> sum(size);    // presumably everthing is 0
+    std::vector<uint32_t> sum;    // presumably everthing is 0
+    sum.resize(size);
+    size = size % 2 == 0 ? size+1 : size;
+    m_m0 = size;
     do {
-        size = size % 2 == 0 ? 2 * floor((size + 1) >> 1) + 1 : 2 * floor(size >> 1);
-        T->clear(), T->resize(size);                    // reset table
-        sum.resize(size), sum.assign(sum.size(), 0);    // reset sum
-        m_m0 = size, h1(0, true);                       // reset h1
+        T->assign(size,nullptr);                    // reset table
+        sum.assign(sum.size(), 0);    // reset sum
+        h1(0, true);                       // reset h1
         for (auto &i : m_tableEntry) {
             if (i != nullptr) {
                 for (auto &j : *i) {
@@ -120,23 +123,26 @@ void PerfectHashTable::BuildPerfectHashing() {
                     }
                     (*T)[newi]->push_back(j);
                     sum[newi]++;
-                    sum[newi] *= sum[newi];
                 }
             }
         }
-    } while (std::accumulate(sum.cbegin(), sum.cend(), 0) > 4 * size);    // build the table
+        std::transform(sum.begin(),sum.end(),sum.begin(),[](uint32_t s){return s*s;});
+    } while (std::accumulate(sum.cbegin(), sum.cend(), 0) >= (4 * size));    // build the table
     auto sizeT = T->size();
     m_newTable.resize(T->size());
+    m_pt.second.resize(T->size());
+    m_pt.first.resize(T->size());
     for (auto i {0}; i < sizeT; ++i) {
         if ((*T)[i] != nullptr) {
-            m_pt.second[i] = (*T)[i]->size() * (*T)[i]->size() + 1;
-            auto table = new std::vector<uint32_t>;
+            m_pt.second[i] = (*T)[i]->size() * (*T)[i]->size();
+            auto table = new std::vector<int32_t>;
             again:
             h2(0,i,true);
-            table->clear(),table->resize(m_pt.second[i]);
-            for(auto j : T[i]){
-                auto newi = h2(j->front(),i); //j->front() will bugout
-                if(!table[newi].empty()){
+            table->assign(m_pt.second[i],-1);
+            auto listT = (*T)[i];
+            for(auto &j : *listT){
+                    auto newi = h2(j,i); //j->fronOutro erro, no critério dt() will bugout
+                    if((*table)[newi] != (-1)){
                     goto again;
                 }
             }

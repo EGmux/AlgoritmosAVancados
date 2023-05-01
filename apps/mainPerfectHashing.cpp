@@ -47,8 +47,7 @@ int main(int argc, char *argv[]){
             auto K = RngNext()%U;
             auto [i,j] = T.PerfectHashingSearch(K);
             if(curQuery % Pq == 0){
-                 std::cout << Q << ' ' << K << ' ' << i << ' ' << j << '\n';
-                // K := key val, i := position in T0 that become T1, j := position in the linked list T0 that become T1 
+                 std::cout << 'Q' << ' ' << K << ' ' << i << ' ' << j << '\n';
             }
         }
     }
