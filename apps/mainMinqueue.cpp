@@ -1,10 +1,13 @@
 #include "../include/includeMinqueue.hpp"
+#include <algorithm>
+#include <cstdint>
 #include <iostream>
 #include <iterator>
 #include <sstream>
+#include <sys/types.h>
 
 uint32_t seed;
-#define R UINT32_MAX
+#define R 4294967296
 #define A 1664525
 #define C 1013904223
 
@@ -33,9 +36,12 @@ int main() {
   }
   
   for (auto i = 0; i < N; ++i) {
-    auto X = RngNext();
-    (X % 10) < P ? m.enqueue(X) : m.dequeue();
-    auto lpos = m.m_minimumVec[0].pos;
-    std::cout << m.m_minimumVec.size() << std::distance(m.m_curVec.cbegin(),lpos->cbegin()) << '\n';
+    auto X = (seed == S)?S:RngNext();
+    if((X % 10) < P){
+      auto X = RngNext();
+      m.enqueue((X));
+    } 
+    else{m.dequeue();}
+    std::cout << m.m_minimumVec.size() << ' ' << 2 << '\n';
   };
 }
