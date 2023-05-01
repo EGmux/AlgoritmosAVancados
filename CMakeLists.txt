@@ -17,9 +17,9 @@ project ("AlgoritmosAVancados")
 add_subdirectory ("AlgoritmosAVancados")
 
 # Include headers
-add_library(SkipListlib STATIC "include/includeSkipList.hpp" "src/srcSkipList.cpp")
-target_include_directories(SkipListlib PUBLIC "include")
-target_compile_features(SkipListlib PUBLIC cxx_std_17)
+add_library(vanEmdeBoaslib STATIC "include/includevanEmdeBoas.hpp" "src/srcvanEmdeBoas.cpp")
+target_include_directories(vanEmdeBoaslib PUBLIC "include")
+target_compile_features(vanEmdeBoaslib PUBLIC cxx_std_17)
 
 IF(ENABLE_TESTS)
 	enable_testing()
@@ -33,14 +33,14 @@ FetchContent_Declare(
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
-add_executable(SkipListTests "tests/testsSkipList.cpp")
-target_link_libraries(SkipListTests PRIVATE GTest::gtest_main)
+add_executable(vanEmdeBoasTests "tests/testsvanEmdeBoas.cpp")
+target_link_libraries(vanEmdeBoasTests PRIVATE GTest::gtest_main)
 include(GoogleTest)
-gtest_discover_tests(SkipListTests)
+gtest_discover_tests(vanEmdeBoasTests)
 endif()
 
 ## Main application
-add_executable(main "apps/mainSkipList.cpp")
-target_link_libraries(main PUBLIC SkipListlib)
+add_executable(main "apps/mainvanEmdeBoas.cpp")
+target_link_libraries(main PUBLIC vanEmdeBoaslib)
 
 
