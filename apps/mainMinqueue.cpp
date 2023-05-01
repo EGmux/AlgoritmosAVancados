@@ -31,17 +31,18 @@ int main() {
   if(B>0){
     m.enqueue(S);
     for (auto i = 0; i < B; ++i) {
-    m.enqueue(RngNext());
+        m.enqueue(RngNext());
     }
   }
   
   for (auto i = 0; i < N; ++i) {
-    auto X = (seed == S)?S:RngNext();
+    auto X = (seed == S)?seed:RngNext();
     if((X % 10) < P){
       auto X = RngNext();
       m.enqueue((X));
     } 
     else{m.dequeue();}
-    std::cout << m.m_minimumVec.size() << ' ' << 2 << '\n';
+    auto pos = m.m_minimumVec[0].pos - (m.g_timer - m.m_minimumVec[0].g_timer);
+    std::cout << m.m_minimumVec.size() << ' ' << pos << '\n';
   };
 }

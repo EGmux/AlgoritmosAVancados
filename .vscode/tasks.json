@@ -10,8 +10,8 @@
           "${workspaceRoot}/out/build/linux-debug/main",
           "<",
           "${workspaceRoot}/testcases/minqueue/3.in",
-          ">",
-          "${workspaceRoot}/testcases/minqueue/3test.out"
+           ">",
+           "${workspaceRoot}/testcases/minqueue/3test.out"
         ],
         "problemMatcher": []
       },
