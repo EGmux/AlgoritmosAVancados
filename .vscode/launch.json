@@ -7,7 +7,8 @@
         "type": "cppdbg",
         "request": "launch",
         "program": "${workspaceRoot}/out/build/linux-debug/main",
-        "args": ["<","${workspaceRoot}/testcases/sparsetable/2.in",">","${workspaceRoot}/testcases/sparsetable/2test.out"],
+        "miDebuggerServerAddress": "localhost:50505",
+        // "args": ["<","${workspaceRoot}/testcases/perfecthashing/1.in",">","${workspaceRoot}/testcases/perfecthashing/1test.out"],
         "stopAtEntry": false,
         "cwd": "${workspaceFolder}",
         "environment": [],
@@ -21,9 +22,12 @@
             "ignoreFailures": true
           }
         ],
+        // "preLaunchTask": "rr-replay"
         /* "preLaunchTask": "C/C++: g++ build active file", */
-        "miDebuggerPath": "/usr/bin/gdb",
-        "miDebuggerArgs": "--args"
+        // "miDebuggerPath": "/usr/bin/gdb",
+        // "miDebuggerArgs": "--args"
       }
-    ]
+      
+    ],
+   
   }
