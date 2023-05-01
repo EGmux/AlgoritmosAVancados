@@ -1,5 +1,4 @@
 #include "../include/includePerfectHashing.hpp"
-#include <algorithm>
 #include <cmath>
 #include <cstdint>
 #include <iostream>
@@ -8,6 +7,19 @@
 #include <map>
 #include <sys/types.h>
 #include <utility>
+
+uint32_t PerfectHashTable::h1(uint32_t k, bool isModify=false){
+    if(isModify){
+     m_a = !(m_isSeed) ?
+                     (1 + m_rng() % (m_p - 1)) :
+                     (m_isSeed = false, (1 + m_seed) % (m_p - 1));    // deal with the annoying X[0]
+    m_b = m_rng() % m_p;
+    }
+    return (((m_a * k + m_b) % m_p) % m_m0);
+
+    
+}
+
 
 PerfectHashTable::PerfectHashTable(uint32_t u, uint32_t m0, uint32_t p, RNG rng, uint32_t seed):
         m_rng(rng),
@@ -18,29 +30,9 @@ PerfectHashTable::PerfectHashTable(uint32_t u, uint32_t m0, uint32_t p, RNG rng,
         m_isSeed(true),
         m_numKeys(0) {
     m_tableEntry.resize(m_m0);
-    GenHash1();
+    h1(0,true); // setup hash
 };
 
-void PerfectHashTable::GenHash1() {
-    static auto s_acc{0};
-    uint32_t a = !m_isSeed ?
-                     (1 + m_rng() % (m_p - 1)) :
-                     (m_isSeed = false, (1 + m_seed) % (m_p - 1));    // deal with the annoying X[0]
-    uint32_t b = m_rng() % m_p;
-    auto u = m_u;
-    auto p = m_p;
-    auto m0 = m_m0;
-
-    // read this
-    // https://stackoverflow.com/questions/7852101/c-lambda-with-captures-as-a-function-pointer
-    // Zhang's answer
-    static auto impl = [a, b, u, m0, p](uint32_t k) {
-        return (((a * k + b) % p) % m0);
-    };
-    m_mH = [](uint32_t k) {
-        return impl(k);
-    };
-};
 
 void PerfectHashTable::Rehash() {
     auto isRehash = 2 * m_numKeys > m_tableEntry.capacity() ? true : false;
@@ -48,11 +40,11 @@ void PerfectHashTable::Rehash() {
         m_m0 = (m_m0 << 1) + 1;          // increase the size
         auto tmpT = new FirstLvTable;    // need to allocate in the heap
         tmpT->resize(m_m0);
-        GenHash1();    // P=2^31 -1, mutates m_mH
+        h1(0,true);    // P=2^31 -1, mutates m_mH
         for (auto i : m_tableEntry) {
             if (i != nullptr) {
                 for(auto j : *i){
-                    auto newi = m_mH(j);
+                    auto newi = h1(j);
                     if ((*tmpT)[newi] == nullptr) {    // guarantee no segfault
                         auto fwdTmp = new std::list<uint32_t>;
                         (*tmpT)[newi] = fwdTmp;
@@ -72,8 +64,12 @@ void PerfectHashTable::Rehash() {
 }
     
 std::pair<bool, uint32_t> PerfectHashTable::Get(uint32_t k) {
-    auto index = m_mH(k);
+    auto index = h1(k);
     uint32_t acc {0};
+    if(m_tableEntry[index] == nullptr){
+        auto l  = new std::list<uint32_t>;
+        m_tableEntry[index] = l;
+    }
     for (auto i : *m_tableEntry[index]) {
         if (i == k)
             return {true, acc};
@@ -83,17 +79,16 @@ std::pair<bool, uint32_t> PerfectHashTable::Get(uint32_t k) {
 }
 
 std::pair<int32_t, int32_t> PerfectHashTable::Set(uint32_t k) {
-    Rehash();    // Check if table has too many elements
-    uint32_t i = (int32_t) m_mH(k);
     std::pair<bool, uint32_t> j;
-    auto isPresent {true};
-    if (m_tableEntry[i] == nullptr) {
-        auto tmpFL = new std::list<uint32_t>;
-        m_tableEntry[i] = tmpFL;
-    }
     if (j = Get(k), !j.first) {    // means false
+        Rehash();    // Check if table has too many elements
+        auto i =h1(k);
+        if(m_tableEntry[i] == nullptr){ // the naughtiest bug
+            auto l = new std::list<uint32_t>;
+            m_tableEntry[i] = l;
+        }
         m_tableEntry[i]->push_back(k), m_numKeys++;
-        isPresent = false;
+        j.second = m_tableEntry[i]->size()-1;
     }
-    return {i, j.second};
+    return {h1(k), j.second};
 }
