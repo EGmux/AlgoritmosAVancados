@@ -42,12 +42,13 @@ node* SplayTree::m_rotateL(node *x){
     auto rleft = r!=nullptr?r->left:nullptr;
     x->right = rleft;
     rleft!=nullptr?rleft->par=x:rleft;
-    if(r!=nullptr){
-        x->par=r,r->left=x,r->par=p;
+    r->left = x; //always != nullptr
+    r->left=x;
+    x->par=r;
+    r->par=p;
         if(p!=nullptr){
             p->left==x?p->left=r:p->right=r;
         }
-    }
     return r;
 }
 
@@ -57,12 +58,12 @@ node* SplayTree::m_rotateR(node *x){
     auto rright = r!=nullptr?r->right:nullptr;
     x->left=rright;
     rright!=nullptr?rright->par=x:rright;
-    if(r!=nullptr){
-        x->par=r,r->right=x,r->par=p;
+    r->right = x;
+    x->par=r;
+    r->par=p;
         if(p!=nullptr){
             p->left==x?p->left=r:p->right=r;
         }
-    }
     return r;
 }
 
@@ -75,10 +76,22 @@ node* SplayTree::m_zigzag(node *x){
     auto p = x->par;
     auto g = p->par; //ancestral of x
     if(p == g->left){
-        return x==p->left?m_rotateR(g),m_rotateR(p):m_rotateL(p),m_rotateR(g);
+        if(x==p->left){
+            m_rotateR(g);
+            return m_rotateR(p);
+        }else{
+            m_rotateL(p);
+            return m_rotateR(g);
+        }
     }
     else{
-        return x==p->right?m_rotateL(g),m_rotateL(p):m_rotateR(p),m_rotateL(g);
+        if(x==p->right){
+            m_rotateL(g);
+            return m_rotateL(p);
+        }else{
+            m_rotateR(p);
+            return m_rotateL(g);
+        }
     }
 }
 
