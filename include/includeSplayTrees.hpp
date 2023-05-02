@@ -1,6 +1,7 @@
 #ifndef SPLAY_TREES_H
 #define SPLAY_TREES_H
 #include <cstdint>
+#include <utility>
 
 struct node{
     node* left{nullptr};
@@ -13,6 +14,8 @@ struct SplayTree{
     SplayTree();
     int32_t insert(uint32_t k);
     int32_t query(uint32_t k);
+    std::pair<int32_t,node*> search(uint32_t k);
+    
 
     // Base methods
     node* m_rotateL(node* x);
