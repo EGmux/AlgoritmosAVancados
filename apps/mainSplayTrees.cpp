@@ -31,11 +31,11 @@ int main(int argc, char *argv[]){
         ss >> S >> U >> B >> N  >> I >> Q >> P;
 
         seed = S;
-        auto sT = new SplayTree(1);
+        auto sT = new SplayTree();
         if(B>0){
-            sT->Insert(seed % U);
+            sT->insert(seed % U);
             for(auto i{1}; i < B; ++i){
-                sT->Insert(RngNext()%U);
+                sT->insert(RngNext()%U);
             }
         }
         
@@ -44,14 +44,14 @@ int main(int argc, char *argv[]){
             if(X%(I+Q)<I){
                 /* INS */
                 auto K = RngNext() % U;
-                auto D = sT->Search(K);
+                auto D = sT->insert(K);
                 if(curOp%P==0){
                     std::cout << "I " << K << ' ' << D << '\n';
                 }
             }else{
                 /* QUERY */
                 auto K = RngNext() % U;
-                auto D = sT->Insert(K);
+                auto D = sT->query(K);
                 if(curOp%P == 0){
                     std::cout << "Q " << K << ' ' << D << '\n'; 
                 }

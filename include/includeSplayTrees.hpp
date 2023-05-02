@@ -14,7 +14,7 @@ struct SplayTree{
     SplayTree();
     int32_t insert(uint32_t k);
     int32_t query(uint32_t k);
-    std::pair<int32_t,node*> search(uint32_t k);
+    
     
 
     // Base methods
@@ -24,11 +24,12 @@ struct SplayTree{
     // Operational methods
     node* m_zig(node* x);
     node* m_zigzag(node *x);
-    node* splay(node* x);
+    node* m_splay(node* x);
+    std::pair<int32_t,node*> m_search(uint32_t k);
 
     //fields
-    node* root;
-}
+    node* root{nullptr};
+};
 
 
 #endif //SPLAY_TREES_H

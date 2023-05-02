@@ -4,25 +4,23 @@
 SplayTree::SplayTree()=default;
 
 int32_t nodeInsert(node* x, uint32_t k, int32_t d){
-    if(x->key < k){ 
+    if(k < x->key){ 
         if(x->left==nullptr){
             auto n = new node;
-            x->left = n,x->left->key=k;
+            x->left = n,x->left->key=k,x->left->par=x;
             return d;
         }else{
-            nodeInsert(x->left, k, d+1);
+            return nodeInsert(x->left, k, d+1);
         }
-    }else if(x->key > k){
+    }else if(k > x->key){
         if(x->right == nullptr){
             auto n = new node;
-            x->right = n,x->right->key=k;
+            x->right = n,x->right->key=k,x->right->par=x;
             return d;
         }
-            nodeInsert(x->right, k, d+1);
+            return nodeInsert(x->right, k, d+1);
     }
-    else{ // must means that x->key == k
-        return -1;
-    }
+    return -1;
 }
 
 int32_t SplayTree::insert(uint32_t k){
@@ -32,7 +30,7 @@ int32_t SplayTree::insert(uint32_t k){
         auto n = new node;
         root = n,root->key = k,d=0;
     }
-    else if(root->key < k && root->key != k){
+    else if(root->key != k){
         d  = nodeInsert(root,k,1);
     }
     return d;
@@ -45,8 +43,10 @@ node* SplayTree::m_rotateL(node *x){
     x->right = rleft;
     rleft!=nullptr?rleft->par=x:rleft;
     if(r!=nullptr){
-        x->par=r,r->par=p,r->left=x;
-        p->left==x?p->left=r:p->right=r;
+        x->par=r,r->left=x,r->par=p;
+        if(p!=nullptr){
+            p->left==x?p->left=r:p->right=r;
+        }
     }
     return r;
 }
@@ -58,8 +58,10 @@ node* SplayTree::m_rotateR(node *x){
     x->left=rright;
     rright!=nullptr?rright->par=x:rright;
     if(r!=nullptr){
-        x->par=r,r->right=x;
-        p->left==x?p->left=r:p->right=r;
+        x->par=r,r->right=x,r->par=p;
+        if(p!=nullptr){
+            p->left==x?p->left=r:p->right=r;
+        }
     }
     return r;
 }
@@ -80,36 +82,31 @@ node* SplayTree::m_zigzag(node *x){
     }
 }
 
-node* SplayTree::splay(node *x){
-    int32_t acc=-1;
+node* SplayTree::m_splay(node *x){
     while(x->par != nullptr){// that is x is not root-node
         auto g = x->par->par; //before x is root node g will be nullptr
-        if(g==nullptr){
-            m_zig(x),acc=acc+1;
-        }else{
-            m_zigzag(x),acc=acc+2; //increment acc twice
-        }
+        g==nullptr?m_zig(x):m_zigzag(x); //increment acc twice
     } 
-    return {acc,x};
+    return x;
 }
 
-std::pair<int32_t,node*>SplayTree::search(uint32_t k){
+std::pair<int32_t,node*>SplayTree::m_search(uint32_t k){
     int32_t depth=0;
     auto cur = root;
     while(cur!=nullptr){
         if(cur->key==k){
             return {depth,cur};
         }else{
-            depth++,cur = (cur->key<k?cur->left:cur->right);
+            depth++,cur = (k < cur->key?cur->left:cur->right);
         }
     }
     return {-1,nullptr};
 }
 
 int32_t SplayTree::query(uint32_t k){
-    auto x = search(k);
+    auto x = m_search(k);
     if(x.second!=nullptr){ // x is a node that exists
-        root = splay(x.second);
+        root = m_splay(x.second);
     } 
     return x.first;
 }
