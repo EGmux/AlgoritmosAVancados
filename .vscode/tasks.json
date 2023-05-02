@@ -9,7 +9,7 @@
           "record",
           "${workspaceRoot}/out/build/linux-debug/main",
           "<",
-          "${workspaceRoot}/testcases/splaytrees/1.in"
+          "${workspaceRoot}/testcases/splaytree/2.in"
         ],
         "problemMatcher": []
       },
@@ -31,7 +31,51 @@
         "dependsOn": [
           "rr-record",
           "rr-replay"
-        ]
+        ],
+        "problemMatcher": []
+      },
+      {
+        "label": "rr-record-diff",
+        "command": "rr",
+        "type": "shell",
+        "args": [
+          "record",
+          "${workspaceRoot}/out/build/linux-debug/main",
+          "<",
+          "${workspaceRoot}/testcases/splaytree/${input:testCaseNum}.in",
+          ">",
+          "${workspaceRoot}/testcases/splaytree/${input:testCaseNum}test.out"
+        ],
+        "problemMatcher": []
+      },
+      {
+        "label": "diff",
+        "command": "diff",
+        "type": "shell",
+        "args": [
+          "${workspaceRoot}/testcases/splaytree/${input:testCaseNum}.out",
+          "${workspaceRoot}/testcases/splaytree/${input:testCaseNum}test.out",
+          ">",
+          "${workspaceRoot}/testcases/splaytree/${input:testCaseNum}diff.out"
+        ],
+        "problemMatcher": []
+      },
+      {
+        "label": "compose-diff",
+        "dependsOrder": "sequence",
+        "dependsOn":[
+          "rr-record-diff",
+          "diff"
+        ],
+        "problemMatcher": []
+      },
+    ],
+    "inputs": [
+      {
+        "id": "testCaseNum",
+        "description": "Number of testcase to diff",
+        "default" : "1",
+        "type": "promptString"
       }
     ]
 }
