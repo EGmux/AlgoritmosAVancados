@@ -38,3 +38,24 @@ int32_t SplayTree::insert(uint32_t k){
     return d;
 }
 
+node* SplayTree::m_rotateL(node *x){
+    auto p = x->par;
+    auto r = x->right;
+    auto rleft = r!=nullptr?r->left:nullptr;
+    x->right = rleft;
+    rleft!=nullptr?rleft->par=x:rleft;
+    r!=nullptr?x->par=r,r->par=p,r->left=x:r;
+    p->left==x?p->left=r:p->right=r;
+    return r;
+}
+
+node* SplayTree::m_rotateR(node *x){
+    auto p = x->par;
+    auto r = x->left;
+    auto rright = r!=nullptr?r->right:nullptr;
+    x->left=rright;
+    rright!=nullptr?rright->par=x:rright;
+    r!=nullptr?x->par=r,r->right=x:r;
+    p->left==x?p->left=r:p->right=r;
+    return r
+}
